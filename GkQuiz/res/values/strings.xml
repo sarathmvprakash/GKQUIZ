@@ -2,7 +2,23 @@
 <resources>
 
     <string name="app_name">GkQuiz</string>
-    <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-
+    <string name="play">Play</string>
+    <string name="settings">Settings</string>
+    <string name="exit">Exit</string>
+    <string name="Rs1million">15          Rs 1 Million</string>
+    <string name="Rs500000">14           Rs  500,000</string>
+    <string name="Rs250000">13           Rs  250,000</string>
+    <string name="Rs125000">12           Rs  125,000</string>
+    <string name="Rs64000">11             Rs  64,000</string>
+    <string name="Rs32000">10             Rs  32,000</string>
+    <string name="Rs16000">9             Rs  16,000</string>
+    <string name="Rs8000">8              Rs   8,000</string>
+    <string name="Rs4000">7              Rs   4,000</string>
+    <string name="Rs2000">6              Rs   2,000</string>
+    <string name="Rs1000">5               Rs  1,000</string>
+    <string name="Rs500">4               Rs     500</string>
+    <string name="Rs300">3               Rs     300"</string>
+    <string name="Rs200">2               Rs     200</string>
+    <string name="Rs100">1               Rs     100</string>
 </resources>
