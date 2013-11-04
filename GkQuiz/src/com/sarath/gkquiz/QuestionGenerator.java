@@ -48,9 +48,9 @@ public class QuestionGenerator {
   }
 
   private QuizEntry getQuizEntry(String question, String option1,
-      String option2, String option3, String option4, String answer) {
-    List<String> options = new ArrayList<String>(Arrays.asList(option1, option2, option3, option4));
-    return new QuizEntry(question, options, answer);
+    String option2, String option3, String option4, String answer) {
+      List<String> options = new ArrayList<String>(Arrays.asList(option1, option2, option3, option4));
+      return new QuizEntry(question, options, answer);
   }
 
   public List<QuizEntry> getQuizEntries() {

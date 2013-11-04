@@ -28,18 +28,17 @@ public class MainMenu extends Activity implements OnClickListener{
   @Override
   public void onClick(View v) {
     switch (v.getId()) {
-      case R.id.btn_play:
-      Intent i = new Intent(MainMenu.this, PlayQuiz.class);
+    case R.id.btn_play:
+      Intent i = new Intent(MainMenu.this, QuizPlayScreen.class);
       startActivity(i);
       break;
-
-      case R.id.btn_settings:
+    case R.id.btn_settings:
+      // TODO: Show settings dialog box for enabling/disabling sound.
       break;
-
-      case R.id.btn_exit:
+    case R.id.btn_exit:
+      finish();
       break;
-
-      default:
+    default:
       break;
     }
   }
