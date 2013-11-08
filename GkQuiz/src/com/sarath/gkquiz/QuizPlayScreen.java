@@ -17,9 +17,9 @@ import android.widget.Toast;
  * @author sarath prakash.
  */
 public class QuizPlayScreen extends Activity {
-  private TextView question,indicator_100,indicator_200,indicator_300,indicator_500,indicator_1000,indicator_2000,
-   indicator_4000,indicator_8000,indicator_16000,indicator_32000,
-   indicator_64000,indicator_125000,indicator_250000,indicator_500000,indicator_1Million;
+
+  private TextView[] textIndicator;
+  private TextView question;
   private TextView option1;
   private TextView option2;
   private TextView option3;
@@ -29,7 +29,8 @@ public class QuizPlayScreen extends Activity {
   private int quizId;
   private List<QuizEntry> quizEntries;
   private CountDownTimer timer;
-  private int gamesWon;
+  private int numQuestionAnsweredCorrectly;
+  private static final int DELAY_MILLIS = 4000;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -39,43 +40,44 @@ public class QuizPlayScreen extends Activity {
     quizEntries = generator.getQuizEntries();
     quizLimit = quizEntries.size();
     quizId = 0;
-    gamesWon = 0;
+    numQuestionAnsweredCorrectly = 0;
+    textIndicator = new TextView[15];
     question = (TextView)findViewById(R.id.tv_question);
     option1 = (TextView)findViewById(R.id.tv_choice_1);
     option2 = (TextView)findViewById(R.id.tv_choice_2);
     option3 = (TextView)findViewById(R.id.tv_choice_3);
     option4 = (TextView)findViewById(R.id.tv_choice_4);
-    indicator_100 = (TextView)findViewById(R.id.tv_rs100);
-    indicator_200 = (TextView)findViewById(R.id.tv_rs200);
-    indicator_300 = (TextView)findViewById(R.id.tv_rs300);
-    indicator_500 = (TextView)findViewById(R.id.tv_rs500);
-    indicator_1000 = (TextView)findViewById(R.id.tv_rs1000);
-    indicator_2000 = (TextView)findViewById(R.id.tv_rs2000);
-    indicator_4000 = (TextView)findViewById(R.id.tv_rs4000);
-    indicator_8000 = (TextView)findViewById(R.id.tv_rs8000);
-    indicator_16000 = (TextView)findViewById(R.id.tv_rs16000);
-    indicator_32000 = (TextView)findViewById(R.id.tv_rs32000);
-    indicator_64000 = (TextView)findViewById(R.id.tv_rs64000);
-    indicator_125000 = (TextView)findViewById(R.id.tv_rs125000);
-    indicator_250000 = (TextView)findViewById(R.id.tv_rs250000);
-    indicator_500000 = (TextView)findViewById(R.id.tv_rs500000);
-    indicator_1Million = (TextView)findViewById(R.id.tv_1million);
+    textIndicator[0] = (TextView)findViewById(R.id.tv_rs100);
+    textIndicator[1] = (TextView)findViewById(R.id.tv_rs200);
+    textIndicator[2] = (TextView)findViewById(R.id.tv_rs300);
+    textIndicator[3] = (TextView)findViewById(R.id.tv_rs500);
+    textIndicator[4] = (TextView)findViewById(R.id.tv_rs1000);
+    textIndicator[5] = (TextView)findViewById(R.id.tv_rs2000);
+    textIndicator[6] = (TextView)findViewById(R.id.tv_rs4000);
+    textIndicator[7] = (TextView)findViewById(R.id.tv_rs8000);
+    textIndicator[8] = (TextView)findViewById(R.id.tv_rs16000);
+    textIndicator[9] = (TextView)findViewById(R.id.tv_rs32000);
+    textIndicator[10] = (TextView)findViewById(R.id.tv_rs64000);
+    textIndicator[11] = (TextView)findViewById(R.id.tv_rs125000);
+    textIndicator[12] = (TextView)findViewById(R.id.tv_rs250000);
+    textIndicator[13] = (TextView)findViewById(R.id.tv_rs500000);
+    textIndicator[14] = (TextView)findViewById(R.id.tv_1million);
     countDown = (TextView)findViewById(R.id.tv_countdown);
     setOnClickListener(option1);
     setOnClickListener(option2);
     setOnClickListener(option3);
     setOnClickListener(option4);
     updateQuiz();
-    amountWonTextBoxIndicator();
+    updatePrizeIndicator();
   }
 
   private void setOnClickListener(final TextView selectedOption) {
     selectedOption.setOnClickListener(new OnClickListener() {
       @Override public void onClick(View v) {
         if(checkCurrentQuestion(selectedOption)) {
-          gamesWon++;
-          amountWonTextBoxIndicator();
-          if(timer != null){
+          numQuestionAnsweredCorrectly++;
+          updatePrizeIndicator();
+          if(timer != null) {
             timer.cancel();
             timer = null;
           }
@@ -98,29 +100,26 @@ public class QuizPlayScreen extends Activity {
             option4.setBackgroundColor(Color.GREEN);
           }
           new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-              toastMethod(Color.RED, "GAME OVER");
+            @Override public void run() {
+              showToast(Color.RED, "GAME OVER");
               new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
+                @Override public void run() {
                   displayAmountWon();
                   new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+                    @Override public void run() {
                       finish();
                     }
-                  }, 4000);
+                  }, DELAY_MILLIS);
                 }
-              }, 4000);
+              }, DELAY_MILLIS);
             }
-          }, 4000);
+          }, DELAY_MILLIS);
         }
       }
     });
   }
 
-  private void toastMethod(int color, String post){
+  private void showToast(int color, String post) {
     Toast toast = Toast.makeText(this, post, Toast.LENGTH_SHORT);
     toast.getView().setBackgroundColor(color);
     toast.show();
@@ -129,10 +128,11 @@ public class QuizPlayScreen extends Activity {
   private void updateQuiz() {
     if (quizId < quizLimit) {
       countdownTimer();
-      option1.setBackgroundColor(getResources().getColor(R.color.blue));
-      option2.setBackgroundColor(getResources().getColor(R.color.blue));
-      option3.setBackgroundColor(getResources().getColor(R.color.blue));
-      option4.setBackgroundColor(getResources().getColor(R.color.blue));
+      int blueColor = getResources().getColor(R.color.blue);
+      option1.setBackgroundColor(blueColor);
+      option2.setBackgroundColor(blueColor);
+      option3.setBackgroundColor(blueColor);
+      option4.setBackgroundColor(blueColor);
       QuizEntry entry = quizEntries.get(quizId);
       question.setText(entry.question);
       option1.setText(entry.options.get(0));
@@ -142,7 +142,7 @@ public class QuizPlayScreen extends Activity {
     }
   }
 
-  private void countdownTimer(){
+  private void countdownTimer() {
     timer = new CountDownTimer(60000, 1000) {
       public void onTick(long millisUntilFinished) {
 	    countDown.setText("" + millisUntilFinished / 1000);
@@ -151,148 +151,154 @@ public class QuizPlayScreen extends Activity {
 	    countDown.setText("TIMED OUT");
 	    countDown.setTextColor(Color.RED);
 	    new Handler().postDelayed(new Runnable() {
-          @Override
-          public void run() {
+          @Override public void run() {
             displayAmountWon();
             new Handler().postDelayed(new Runnable() {
-              @Override
-              public void run() {
+              @Override public void run() {
                 finish();
               }
-            }, 4000);
+            }, DELAY_MILLIS);
           }
-        }, 4000);
+        }, DELAY_MILLIS);
 	  }
 	}.start();
   }
 
-  private void displayAmountWon(){
-    if (gamesWon == 0){
-	  toastMethod(Color.GREEN, "WON Rs 0");
-	}
-	else if (gamesWon == 1){
-	  toastMethod(Color.GREEN, "WON Rs 100");
-	}
-    else if (gamesWon == 2){
-      toastMethod(Color.GREEN, "WON Rs 200");
-	}
-    else if (gamesWon == 3){
-      toastMethod(Color.GREEN, "WON Rs 300");
-	}
-    else if (gamesWon == 4){
-      toastMethod(Color.GREEN, "WON Rs 500");
-    }
-    else if (gamesWon == 5){
-      toastMethod(Color.GREEN, "WON Rs 1,000");
-    }
-    else if (gamesWon == 6){
-      toastMethod(Color.GREEN, "WON Rs 2,000");
-    }
-    else if (gamesWon == 7){
-      toastMethod(Color.GREEN, "WON Rs 4,000");
-    }
-    else if (gamesWon == 8){
-      toastMethod(Color.GREEN, "WON Rs 8,000");
-    }
-    else if (gamesWon == 9){
-      toastMethod(Color.GREEN, "WON Rs 16,000");
-    }
-    else if (gamesWon == 10){
-      toastMethod(Color.GREEN, "WON Rs 32,000");
-    }
-    else if (gamesWon == 11){
-      toastMethod(Color.GREEN, "WON Rs 64,000");
-    }
-    else if (gamesWon == 12){
-      toastMethod(Color.GREEN, "WON Rs 125,000");
-    }
-    else if (gamesWon == 13){
-      toastMethod(Color.GREEN, "WON Rs 250,000");
-    }
-    else if (gamesWon == 14){
-      toastMethod(Color.GREEN, "WON Rs 500,000");
-    }
-    else if (gamesWon == 15){
-      toastMethod(Color.GREEN, "WON Rs 1 Millon !!!!!");
+  private void displayAmountWon() {
+    switch(numQuestionAnsweredCorrectly) {
+    case 0:
+	  showToast(Color.GREEN, "WON Rs 0");
+	  break;
+    case 1:
+      showToast(Color.GREEN, "WON Rs 100");
+      break;
+    case 2:
+      showToast(Color.GREEN, "WON Rs 200");
+      break;
+    case 3:
+      showToast(Color.GREEN, "WON Rs 300");
+      break;
+    case 4:
+      showToast(Color.GREEN, "WON Rs 500");
+      break;
+    case 5:
+      showToast(Color.GREEN, "WON Rs 1,000");
+      break;
+    case 6:
+      showToast(Color.GREEN, "WON Rs 2,000");
+      break;
+    case 7:
+      showToast(Color.GREEN, "WON Rs 4,000");
+      break;
+    case 8:
+      showToast(Color.GREEN, "WON Rs 8,000");
+      break;
+    case 9:
+      showToast(Color.GREEN, "WON Rs 16,000");
+      break;
+    case 10:
+      showToast(Color.GREEN, "WON Rs 32,000");
+      break;
+    case 11:
+      showToast(Color.GREEN, "WON Rs 64,000");
+      break;
+    case 12:
+	  showToast(Color.GREEN, "WON Rs 125,000");
+	  break;
+	case 13:
+      showToast(Color.GREEN, "WON Rs 250,000");
+      break;
+    case 14:
+      showToast(Color.GREEN, "WON Rs 500,000");
+      break;
+	case 15:
+      showToast(Color.GREEN, "WON Rs 1 Million");
+      break;
     }
   }
 
-  public void delay(){
+  public void delay() {
     new Handler().postDelayed(new Runnable() {
-	  @Override
-	  public void run() {
+	  @Override public void run() {
 	    updateQuiz();
 	  }
 	}, 1000);
   }
 
-  public void amountWonTextBoxIndicator(){
-    if(gamesWon == 0){
-      indicator_100.setTextColor(getResources().getColor(R.color.orange));
-    }
-    else if(gamesWon == 1){
-      indicator_100.setTextColor(Color.GREEN);
-      indicator_200.setTextColor(getResources().getColor(R.color.orange));
-    }
-    else if(gamesWon == 2){
-      indicator_200.setTextColor(Color.GREEN);
-      indicator_300.setTextColor(getResources().getColor(R.color.orange));
-    }
-    else if(gamesWon == 3){
-      indicator_300.setTextColor(Color.GREEN);
-      indicator_500.setTextColor(getResources().getColor(R.color.orange));
-    }
-    else if(gamesWon == 4){
-      indicator_500.setTextColor(Color.GREEN);
-      indicator_1000.setTextColor(getResources().getColor(R.color.orange));
-    }
-    else if(gamesWon == 5){
-      indicator_1000.setTextColor(Color.GREEN);
-      indicator_2000.setTextColor(getResources().getColor(R.color.orange));
-    }
-    else if(gamesWon == 6){
-      indicator_2000.setTextColor(Color.GREEN);
-      indicator_4000.setTextColor(getResources().getColor(R.color.orange));
-    }
-    else if(gamesWon == 7){
-      indicator_4000.setTextColor(Color.GREEN);
-      indicator_8000.setTextColor(getResources().getColor(R.color.orange));
-    }
-    else if(gamesWon == 8){
-      indicator_8000.setTextColor(Color.GREEN);
-      indicator_16000.setTextColor(getResources().getColor(R.color.orange));
-    }
-    else if(gamesWon == 9){
-      indicator_16000.setTextColor(Color.GREEN);
-      indicator_32000.setTextColor(getResources().getColor(R.color.orange));
-    }
-    else if(gamesWon == 10){
-      indicator_32000.setTextColor(Color.GREEN);
-      indicator_64000.setTextColor(getResources().getColor(R.color.orange));
-    }
-    else if(gamesWon == 10){
-      indicator_64000.setTextColor(Color.GREEN);
-      indicator_125000.setTextColor(getResources().getColor(R.color.orange));
-    }
-    else if(gamesWon == 11){
-      indicator_125000.setTextColor(Color.GREEN);
-      indicator_250000.setTextColor(getResources().getColor(R.color.orange));
-    }
-    else if(gamesWon == 12){
-      indicator_250000.setTextColor(Color.GREEN);
-      indicator_500000.setTextColor(getResources().getColor(R.color.orange));
-    }
-    else if(gamesWon == 13){
-      indicator_500000.setTextColor(Color.GREEN);
-      indicator_1Million.setTextColor(getResources().getColor(R.color.orange));
+  public void updatePrizeIndicator() {
+    switch (numQuestionAnsweredCorrectly) {
+    case 0:
+      textIndicator[0].setTextColor(getResources().getColor(R.color.orange));
+      break;
+    case 1:
+      textIndicator[0].setTextColor(Color.GREEN);
+      textIndicator[1].setTextColor(getResources().getColor(R.color.orange));
+      break;
+    case 2:
+      textIndicator[1].setTextColor(Color.GREEN);
+      textIndicator[2].setTextColor(getResources().getColor(R.color.orange));
+      break;
+    case 3:
+      textIndicator[2].setTextColor(Color.GREEN);
+      textIndicator[3].setTextColor(getResources().getColor(R.color.orange));
+      break;
+    case 4:
+      textIndicator[3].setTextColor(Color.GREEN);
+      textIndicator[4].setTextColor(getResources().getColor(R.color.orange));
+      break;
+    case 5:
+      textIndicator[4].setTextColor(Color.GREEN);
+      textIndicator[5].setTextColor(getResources().getColor(R.color.orange));
+      break;
+    case 6:
+      textIndicator[5].setTextColor(Color.GREEN);
+      textIndicator[6].setTextColor(getResources().getColor(R.color.orange));
+      break;
+    case 7:
+      textIndicator[6].setTextColor(Color.GREEN);
+      textIndicator[7].setTextColor(getResources().getColor(R.color.orange));
+      break;
+    case 8:
+      textIndicator[7].setTextColor(Color.GREEN);
+      textIndicator[8].setTextColor(getResources().getColor(R.color.orange));
+      break;
+    case 9:
+      textIndicator[8].setTextColor(Color.GREEN);
+      textIndicator[9].setTextColor(getResources().getColor(R.color.orange));
+      break;
+    case 10:
+      textIndicator[9].setTextColor(Color.GREEN);
+      textIndicator[10].setTextColor(getResources().getColor(R.color.orange));
+      break;
+    case 11:
+      textIndicator[10].setTextColor(Color.GREEN);
+      textIndicator[11].setTextColor(getResources().getColor(R.color.orange));
+      break;
+    case 12:
+      textIndicator[11].setTextColor(Color.GREEN);
+      textIndicator[12].setTextColor(getResources().getColor(R.color.orange));
+      break;
+    case 13:
+      textIndicator[12].setTextColor(Color.GREEN);
+      textIndicator[13].setTextColor(getResources().getColor(R.color.orange));
+      break;
+    case 14:
+      textIndicator[13].setTextColor(Color.GREEN);
+      textIndicator[14].setTextColor(getResources().getColor(R.color.orange));
+      break;
+    case 15:
+      textIndicator[14].setTextColor(Color.GREEN);
+      textIndicator[15].setTextColor(getResources().getColor(R.color.orange));
+      break;
+    default:
+      break;
     }
   }
 
-  public boolean checkCurrentQuestion(TextView selectedOption){
+  private boolean checkCurrentQuestion(TextView selectedOption) {
     if(selectedOption.getText().equals(quizEntries.get(quizId).answer)) {
       return true;
-    }
-    else{
+    }else {
       return false;
     }
   }

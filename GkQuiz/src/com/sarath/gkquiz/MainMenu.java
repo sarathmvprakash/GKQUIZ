@@ -23,6 +23,8 @@ public class MainMenu extends Activity implements OnClickListener{
     butSettings = (Button)(findViewById(R.id.btn_settings));
     butExit = (Button)(findViewById(R.id.btn_exit));
     butPlay.setOnClickListener(this);
+    butSettings.setOnClickListener(this);
+    butExit.setOnClickListener(this);
   }
 
   @Override
@@ -36,7 +38,7 @@ public class MainMenu extends Activity implements OnClickListener{
       // TODO: Show settings dialog box for enabling/disabling sound.
       break;
     case R.id.btn_exit:
-      finish();
+      System.exit(0);
       break;
     default:
       break;
