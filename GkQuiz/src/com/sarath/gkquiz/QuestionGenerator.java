@@ -33,7 +33,7 @@ public class QuestionGenerator {
         "USA", "Canada", "Germany", "Canada"));
     quizEntries.add(getQuizEntry("Who invented the ball-point pen:", "Lazzlo Biro",
         "Curie", "Newton", "Baird", "Lazzlo Biro"));
-    quizEntries.add(getQuizEntry("Penicillin, an, antibiotic, is obtained from a", "Fungus",
+    quizEntries.add(getQuizEntry("Penicillin, an antibiotic is obtained from a", "Fungus",
         "Virus", "Flowering plant", "Bacterium", "Fungus"));
     quizEntries.add(getQuizEntry("Which among the following elements (metals) pollutes the air of a city having large "
         +"number of automobiles?", "Lead", "Nickel", "Chromium", "Cadmium", "Cadmium"));

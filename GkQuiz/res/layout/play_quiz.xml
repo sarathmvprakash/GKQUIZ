@@ -185,4 +185,4 @@
     android:text="@string/countdown"
     android:textColor="#81FC7C"
     android:textAppearance="?android:attr/textAppearanceLarge"/>
- </RelativeLayout>
+</RelativeLayout>
