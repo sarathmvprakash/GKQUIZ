@@ -74,7 +74,7 @@ public class QuizPlayScreen extends Activity {
   private void setOnClickListener(final TextView selectedOption) {
     selectedOption.setOnClickListener(new OnClickListener() {
       @Override public void onClick(View v) {
-        if(checkCurrentQuestion(selectedOption)) {
+        if(selectedOption.getText().equals(quizEntries.get(quizId).answer)) {
           numQuestionAnsweredCorrectly++;
           updatePrizeIndicator();
           if(timer != null) {
@@ -167,8 +167,8 @@ public class QuizPlayScreen extends Activity {
   private void displayAmountWon() {
     switch(numQuestionAnsweredCorrectly) {
     case 0:
-	  showToast(Color.GREEN, "WON Rs 0");
-	  break;
+      showToast(Color.GREEN, "WON Rs 0");
+      break;
     case 1:
       showToast(Color.GREEN, "WON Rs 100");
       break;
@@ -203,13 +203,13 @@ public class QuizPlayScreen extends Activity {
       showToast(Color.GREEN, "WON Rs 64,000");
       break;
     case 12:
-	  showToast(Color.GREEN, "WON Rs 125,000");
+	  showToast(Color.GREEN, "WON Rs 1,25,000");
 	  break;
 	case 13:
-      showToast(Color.GREEN, "WON Rs 250,000");
+      showToast(Color.GREEN, "WON Rs 2,50,000");
       break;
     case 14:
-      showToast(Color.GREEN, "WON Rs 500,000");
+      showToast(Color.GREEN, "WON Rs 5,00,000");
       break;
 	case 15:
       showToast(Color.GREEN, "WON Rs 1 Million");
@@ -292,14 +292,6 @@ public class QuizPlayScreen extends Activity {
       break;
     default:
       break;
-    }
-  }
-
-  private boolean checkCurrentQuestion(TextView selectedOption) {
-    if(selectedOption.getText().equals(quizEntries.get(quizId).answer)) {
-      return true;
-    }else {
-      return false;
     }
   }
 }
