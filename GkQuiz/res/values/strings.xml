@@ -12,6 +12,9 @@
     <string name="choice3">Choice3</string>
     <string name="choice4">Choice4</string>
     <string name="countdown">CountDown</string>
+    <string name="audiancepole">AudiancePole</string>
+    <string name="fiftyfifty">50/50</string>
+    <string name="lifeline">LifeLine</string>
     <string name="Rs1million">15&#160;&#160;&#160;&#160;&#160;&#160;Rs&#160;1 Million</string>
     <string name="Rs500000">14&#160;&#160;&#160;&#160;&#160;&#160;Rs&#160;&#160;500,000</string>
     <string name="Rs250000">13&#160;&#160;&#160;&#160;&#160;&#160;Rs&#160;&#160;250,000</string>

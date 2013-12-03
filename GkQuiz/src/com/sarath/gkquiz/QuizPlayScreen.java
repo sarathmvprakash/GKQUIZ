@@ -1,13 +1,17 @@
 package com.sarath.gkquiz;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,29 +21,32 @@ import android.widget.Toast;
  * @author sarath prakash.
  */
 public class QuizPlayScreen extends Activity {
-
   private TextView[] textIndicator;
   private TextView question;
-  private TextView option1;
-  private TextView option2;
-  private TextView option3;
-  private TextView option4;
-  private TextView countDown;
+  public static TextView option1;
+  public static TextView option2;
+  public static TextView option3;
+  public static TextView option4;
+  private  TextView countDown;
   private int quizLimit;
-  private int quizId;
-  private List<QuizEntry> quizEntries;
+  static int quizId;
+  public static List<QuizEntry> quizEntries;
   private CountDownTimer timer;
   private int numQuestionAnsweredCorrectly;
   private static final int DELAY_MILLIS = 4000;
+  private Toast toast;
+  private Button btnAudiencePole, btnFiftyfifty;
+  public int option1Percentage, option2Percentage, option3Percentage, option4Percentage;
+  public int checkGameOver;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.play_quiz);
     QuestionGenerator generator = new QuestionGenerator();
     quizEntries = generator.getQuizEntries();
     quizLimit = quizEntries.size();
     quizId = 0;
+    checkGameOver = 1;
     numQuestionAnsweredCorrectly = 0;
     textIndicator = new TextView[15];
     question = (TextView)findViewById(R.id.tv_question);
@@ -63,64 +70,56 @@ public class QuizPlayScreen extends Activity {
     textIndicator[13] = (TextView)findViewById(R.id.tv_rs500000);
     textIndicator[14] = (TextView)findViewById(R.id.tv_1million);
     countDown = (TextView)findViewById(R.id.tv_countdown);
+    updateQuiz();
+    audiencePole();
+    fiftyFifty();
     setOnClickListener(option1);
     setOnClickListener(option2);
     setOnClickListener(option3);
     setOnClickListener(option4);
-    updateQuiz();
     updatePrizeIndicator();
   }
 
   private void setOnClickListener(final TextView selectedOption) {
-    selectedOption.setOnClickListener(new OnClickListener() {
-      @Override public void onClick(View v) {
-        if(selectedOption.getText().equals(quizEntries.get(quizId).answer)) {
-          numQuestionAnsweredCorrectly++;
-          updatePrizeIndicator();
-          if(timer != null) {
-            timer.cancel();
-            timer = null;
-          }
-          selectedOption.setBackgroundColor(Color.GREEN);
-          ++quizId;
-          delay();
-          displayAmountWon();
-        } else {
-          selectedOption.setBackgroundColor(Color.RED);
-          if(option1.getText().equals(quizEntries.get(quizId).answer)){
-            option1.setBackgroundColor(Color.GREEN);
-          }
-          if(option2.getText().equals(quizEntries.get(quizId).answer)){
-            option2.setBackgroundColor(Color.GREEN);
-          }
-          if(option3.getText().equals(quizEntries.get(quizId).answer)){
-            option3.setBackgroundColor(Color.GREEN);
-          }
-          if(option4.getText().equals(quizEntries.get(quizId).answer)){
-            option4.setBackgroundColor(Color.GREEN);
-          }
-          new Handler().postDelayed(new Runnable() {
-            @Override public void run() {
-              showToast(Color.RED, "GAME OVER");
-              new Handler().postDelayed(new Runnable() {
-                @Override public void run() {
-                  displayAmountWon();
-                  new Handler().postDelayed(new Runnable() {
-                    @Override public void run() {
-                      finish();
-                    }
-                  }, DELAY_MILLIS);
-                }
-              }, DELAY_MILLIS);
-            }
-          }, DELAY_MILLIS);
+  selectedOption.setOnClickListener(new OnClickListener() {
+    @Override public void onClick(View v) {
+      if(selectedOption.getText().toString().substring(3).equals(quizEntries.get(quizId).answer)) {
+        timer.cancel();
+        numQuestionAnsweredCorrectly++;
+        updatePrizeIndicator();
+        if(timer != null) {
+          timer.cancel();
+          timer = null;
         }
+        selectedOption.setBackgroundColor(Color.GREEN);
+        unClickable(false);
+        ++quizId;
+        displayAmountWon();
+        delay();
+      } else {
+        timer.cancel();
+        selectedOption.setBackgroundColor(Color.RED);
+        if(option1.getText().equals("A: "+quizEntries.get(quizId).answer)) {
+          option1.setBackgroundColor(Color.GREEN);
+        } else if(option2.getText().equals("B: "+quizEntries.get(quizId).answer)) {
+          option2.setBackgroundColor(Color.GREEN);
+        } else if(option3.getText().equals("C: "+quizEntries.get(quizId).answer)) {
+          option3.setBackgroundColor(Color.GREEN);
+        } else if(option4.getText().equals("D: "+quizEntries.get(quizId).answer)) {
+          option4.setBackgroundColor(Color.GREEN);
+        }
+        if(checkGameOver == 1) {
+          checkGameOver++;
+          gameOver("GAME OVER");
+        }
+        unClickable(false);
       }
-    });
+    }
+  });
   }
 
   private void showToast(int color, String post) {
-    Toast toast = Toast.makeText(this, post, Toast.LENGTH_SHORT);
+    toast = Toast.makeText(this, post, Toast.LENGTH_SHORT);
     toast.getView().setBackgroundColor(color);
     toast.show();
   }
@@ -135,33 +134,29 @@ public class QuizPlayScreen extends Activity {
       option4.setBackgroundColor(blueColor);
       QuizEntry entry = quizEntries.get(quizId);
       question.setText(entry.question);
-      option1.setText(entry.options.get(0));
-      option2.setText(entry.options.get(1));
-      option3.setText(entry.options.get(2));
-      option4.setText(entry.options.get(3));
+      option1.setText("A: "+entry.options.get(0));
+      option2.setText("B: "+entry.options.get(1));
+      option3.setText("C: "+entry.options.get(2));
+      option4.setText("D: "+entry.options.get(3));
     }
+    unClickable(true);
   }
 
   private void countdownTimer() {
     timer = new CountDownTimer(60000, 1000) {
       public void onTick(long millisUntilFinished) {
-	    countDown.setText("" + millisUntilFinished / 1000);
-	  }
-	  public void onFinish() {
-	    countDown.setText("TIMED OUT");
-	    countDown.setTextColor(Color.RED);
-	    new Handler().postDelayed(new Runnable() {
-          @Override public void run() {
-            displayAmountWon();
-            new Handler().postDelayed(new Runnable() {
-              @Override public void run() {
-                finish();
-              }
-            }, DELAY_MILLIS);
-          }
-        }, DELAY_MILLIS);
-	  }
-	}.start();
+        countDown.setText("" + millisUntilFinished / 1000);
+      }
+      public void onFinish() {
+        countDown.setText("0");
+        countDown.setTextColor(Color.RED);
+        System.out.println("Timedoutcheck  "+ (checkGameOver == 1));
+        if(checkGameOver == 1) {
+          checkGameOver++;
+          gameOver("TIMED OUT\nGAME OVER");
+        }
+      }
+    }.start();
   }
 
   private void displayAmountWon() {
@@ -203,15 +198,15 @@ public class QuizPlayScreen extends Activity {
       showToast(Color.GREEN, "WON Rs 64,000");
       break;
     case 12:
-	  showToast(Color.GREEN, "WON Rs 1,25,000");
-	  break;
-	case 13:
+      showToast(Color.GREEN, "WON Rs 1,25,000");
+      break;
+    case 13:
       showToast(Color.GREEN, "WON Rs 2,50,000");
       break;
     case 14:
       showToast(Color.GREEN, "WON Rs 5,00,000");
       break;
-	case 15:
+    case 15:
       showToast(Color.GREEN, "WON Rs 1 Million");
       break;
     }
@@ -219,10 +214,70 @@ public class QuizPlayScreen extends Activity {
 
   public void delay() {
     new Handler().postDelayed(new Runnable() {
-	  @Override public void run() {
-	    updateQuiz();
-	  }
-	}, 1000);
+      @Override public void run() {
+        updateQuiz();
+      }
+    }, 1000);
+  }
+
+
+
+  private void unClickable(boolean click) {
+    option1.setClickable(click);
+    option2.setClickable(click);
+    option3.setClickable(click);
+    option4.setClickable(click);
+  }
+
+  public void audiencePole() {
+    btnAudiencePole = (Button)findViewById(R.id.btn_audiencepole);
+    btnAudiencePole.setOnClickListener(new Button.OnClickListener() {
+    @Override public void onClick(View arg0) {
+      BarGraph bar = new BarGraph(getApplicationContext(), quizEntries.get(quizId));
+      Intent lineIntent = bar.getIntent();
+      startActivity(lineIntent);
+      btnAudiencePole.setEnabled(false);
+    }});
+  }
+
+  public void fiftyFifty() {
+    btnFiftyfifty = (Button)findViewById(R.id.btn_fiftyfifty);
+    btnFiftyfifty.setOnClickListener(new OnClickListener() {
+      @Override public void onClick(View v) {
+        List<TextView> quizOPtions = new ArrayList<TextView>();
+        if (QuizPlayScreen.option1.getText().equals("A: "+QuizPlayScreen.quizEntries.get(QuizPlayScreen.quizId).answer)) {
+          System.out.println("check  ");
+          quizOPtions.add(QuizPlayScreen.option2);
+          quizOPtions.add(QuizPlayScreen.option3);
+          quizOPtions.add(QuizPlayScreen.option4);
+          Collections.shuffle(quizOPtions);
+          quizOPtions.get(0).setText("");
+          quizOPtions.get(1).setText("");
+        } else if (QuizPlayScreen.option2.getText().equals("B: "+QuizPlayScreen.quizEntries.get(QuizPlayScreen.quizId).answer)) {
+          quizOPtions.add(QuizPlayScreen.option1);
+          quizOPtions.add(QuizPlayScreen.option3);
+          quizOPtions.add(QuizPlayScreen.option4);
+          Collections.shuffle(quizOPtions);
+          quizOPtions.get(0).setText("");
+          quizOPtions.get(1).setText("");
+        } else if (QuizPlayScreen.option3.getText().equals("C: "+QuizPlayScreen.quizEntries.get(QuizPlayScreen.quizId).answer)) {
+          quizOPtions.add(QuizPlayScreen.option1);
+          quizOPtions.add(QuizPlayScreen.option2);
+          quizOPtions.add(QuizPlayScreen.option4);
+          Collections.shuffle(quizOPtions);
+          quizOPtions.get(0).setText("");
+          quizOPtions.get(1).setText("");
+        } else if (QuizPlayScreen.option4.getText().equals("D: "+QuizPlayScreen.quizEntries.get(QuizPlayScreen.quizId).answer)) {
+          quizOPtions.add(QuizPlayScreen.option1);
+          quizOPtions.add(QuizPlayScreen.option2);
+          quizOPtions.add(QuizPlayScreen.option3);
+          Collections.shuffle(quizOPtions);
+          quizOPtions.get(0).setText("");
+          quizOPtions.get(1).setText("");
+        }
+        btnFiftyfifty.setEnabled(false);
+        }
+    });
   }
 
   public void updatePrizeIndicator() {
@@ -292,6 +347,27 @@ public class QuizPlayScreen extends Activity {
       break;
     default:
       break;
+    }
+  }
+
+  public void gameOver(final String toastDisplayText) {
+    System.out.println("checkGameOver  "+checkGameOver);
+    if (checkGameOver == 2) {
+      new Handler().postDelayed(new Runnable() {
+        @Override public void run() {
+          showToast(Color.RED, toastDisplayText);
+          new Handler().postDelayed(new Runnable() {
+            @Override public void run() {
+              displayAmountWon();
+              new Handler().postDelayed(new Runnable() {
+                @Override public void run() {
+                  finish();
+                }
+              }, DELAY_MILLIS);
+            }
+          }, DELAY_MILLIS);
+        }
+      }, DELAY_MILLIS);
     }
   }
 }

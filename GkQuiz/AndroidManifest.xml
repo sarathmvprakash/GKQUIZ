@@ -4,7 +4,7 @@
   android:versionCode="1"
   android:versionName="1.0" >
   <uses-sdk
-    android:minSdkVersion="10"
+    android:minSdkVersion="12"
     android:targetSdkVersion="14" />
     <application
       android:allowBackup="true"
@@ -19,9 +19,13 @@
           <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
-        <activity
-          android:name="com.sarath.gkquiz.QuizPlayScreen"
-          android:label="@string/app_name" >
-        </activity>
+      <activity
+        android:name="com.sarath.gkquiz.QuizPlayScreen"
+        android:label="@string/app_name" >
+      </activity>
+      <activity android:name="org.achartengine.GraphicalActivity"
+        android:label="Choose Category..."
+        android:windowSoftInputMode="stateAlwaysVisible|adjustPan"
+        android:theme="@android:style/Theme.Dialog"/>
     </application>
 </manifest>

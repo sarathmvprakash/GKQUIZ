@@ -139,17 +139,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="50"
+        android:layout_marginTop="20dp"
         android:text="@string/choice1"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFFFFF"/>
+
       <TextView
-        android:id="@+id/tv_choice_2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="50"
-        android:text="@string/choice2"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#FFFFFF"/>
+          android:id="@+id/tv_choice_2"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="20dp"
+          android:layout_weight="50"
+          android:text="@string/choice2"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          android:textColor="#FFFFFF" />
+
     </LinearLayout>
     <LinearLayout
       android:layout_width="match_parent"
@@ -161,6 +165,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="50"
+        android:layout_marginTop="50dp"
         android:text="@string/choice3"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFFFFF"/>
@@ -169,20 +174,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="50"
+        android:layout_marginTop="50dp"
         android:text="@string/choice4"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFFFFF"/>
     </LinearLayout>
   </LinearLayout>
+
+  <Button
+      android:id="@+id/btn_audiencepole"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignBottom="@+id/relativeLayout1"
+      android:layout_alignParentLeft="true"
+      android:onClick="lifelineactivity"
+      android:layout_marginBottom="32dp"
+      android:text="@string/audiancepole" />
+
   <TextView
-    android:id="@+id/tv_countdown"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignLeft="@+id/linearLayout1"
-    android:layout_alignTop="@+id/relativeLayout1"
-    android:layout_marginLeft="23dp"
-    android:layout_marginTop="56dp"
-    android:text="@string/countdown"
-    android:textColor="#81FC7C"
-    android:textAppearance="?android:attr/textAppearanceLarge"/>
+      android:id="@+id/tv_countdown"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignLeft="@+id/btn_audiencepole"
+      android:layout_alignTop="@+id/relativeLayout1"
+      android:layout_marginLeft="22dp"
+      android:layout_marginTop="28dp"
+      android:text="@string/countdown"
+      android:textAppearance="?android:attr/textAppearanceLarge"
+      android:textColor="#81FC7C" />
+
+  <Button
+      android:id="@+id/btn_fiftyfifty"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignBaseline="@+id/btn_audiencepole"
+      android:layout_alignBottom="@+id/btn_audiencepole"
+      android:layout_toRightOf="@+id/btn_audiencepole"
+      android:text="@string/fiftyfifty" />
+
 </RelativeLayout>
