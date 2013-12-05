@@ -16,52 +16,43 @@ public class BarGraph {
   private final Context context;
   private final QuizEntry quizEntry;
   private Random randomObject = new Random();
+  private int[] optionPercentage;
+  private int balance0, balance1, balance2, balance3;
 
   public BarGraph(Context context, QuizEntry quizEntry) {
+    optionPercentage = new int[4];
     this.context = context;
     this.quizEntry = quizEntry;
   }
 
   public Intent getIntent() {
-    int[] optionPercentage = new int[4];
     int id = 0;
     for (String option : quizEntry.getOptions()) {
-      if(option.equals(quizEntry.getAnswer())){
-        if (id == 0){
-          optionPercentage[id] = 50 + randomObject.nextInt(30) ;
-          int balance = 100 - optionPercentage[id] ;
-          optionPercentage[1] = balance/4;
-          int balance1 = optionPercentage[1];
-          optionPercentage[2] = 3*balance1;
-          optionPercentage[3] = balance1 ;
-        } else if(id == 1) {
-          optionPercentage[id] = 50 + randomObject.nextInt(30) ;
-          int balance = 100 - optionPercentage[id] ;
-          optionPercentage[0] = balance/4;
-          int balance1 = optionPercentage[0];
-          optionPercentage[2] = 3*balance1;
-          optionPercentage[3] = balance1 ;
-        } else if(id == 2){
-          optionPercentage[id] = 50 + randomObject.nextInt(30) ;
-          int balance = 100 - optionPercentage[id];
-          optionPercentage[0] = balance/4;
-          int balance1 = optionPercentage[0];
-          optionPercentage[1] = 3*balance1;
-          optionPercentage[3] = balance1 ;
-          
-        } else if(id == 3){
-          optionPercentage[id] = 50 + randomObject.nextInt(30) ;
-          int balance = 100 - optionPercentage[id] ;
-          optionPercentage[0] = balance/4;
-          int balance1 = optionPercentage[0];
-          optionPercentage[2] = 3*balance1;
-          optionPercentage[1] = balance1 ;
+      if(option.equals(quizEntry.getAnswer())) {
+        switch (id) {
+        case 0:
+          percentageCalculation();
+          graphInitialization(balance0,balance1,balance2,balance3);
+          break;
+        case 1:
+          percentageCalculation();
+          graphInitialization(balance1,balance0,balance2,balance3);
+          break;
+        case 2:
+          percentageCalculation();
+          graphInitialization(balance2,balance1,balance0,balance3);
+          break;
+        case 3:
+          percentageCalculation();
+          graphInitialization(balance3,balance1,balance2,balance0);
+          break;
+        default:
+          break;
         }
       } else {
         id++;
       }
     }
-    
     XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
     XYSeries optionA = new XYSeries("OptionA");
     XYSeries optionB = new XYSeries("OptionB");
@@ -130,5 +121,19 @@ public class BarGraph {
     Intent intent = ChartFactory.getBarChartIntent(context, dataset,mRenderer, Type.DEFAULT);
     return intent;
   }
-}
 
+  private void graphInitialization(int first, int second, int third, int fourth){
+    optionPercentage[0] =first;
+    optionPercentage[1] =second;
+    optionPercentage[2] =third;
+    optionPercentage[3] =fourth;
+  }
+
+  private void percentageCalculation() {
+    balance0 = (50 + randomObject.nextInt(10));
+    balance1 =(100-balance0)/4;
+    int temp1 = (100-(balance1+balance0))/3;
+    balance2 = temp1*2;
+    balance3 = temp1;
+  }
+}

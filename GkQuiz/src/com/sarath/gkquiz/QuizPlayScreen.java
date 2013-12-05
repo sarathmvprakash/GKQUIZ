@@ -23,23 +23,25 @@ import android.widget.Toast;
 public class QuizPlayScreen extends Activity {
   private TextView[] textIndicator;
   private TextView question;
-  public static TextView option1;
-  public static TextView option2;
-  public static TextView option3;
-  public static TextView option4;
+  private  TextView option1;
+  private  TextView option2;
+  private  TextView option3;
+  private  TextView option4;
   private  TextView countDown;
   private int quizLimit;
   static int quizId;
-  public static List<QuizEntry> quizEntries;
+  private  List<QuizEntry> quizEntries;
   private CountDownTimer timer;
   private int numQuestionAnsweredCorrectly;
   private static final int DELAY_MILLIS = 4000;
+  private static final int GAME_OVER_CHECKER = 2;
   private Toast toast;
-  private Button btnAudiencePole, btnFiftyfifty;
-  public int option1Percentage, option2Percentage, option3Percentage, option4Percentage;
-  public int checkGameOver;
+  private  Button btnAudiencePole, btnFiftyfifty;
+  private int checkGameOver;
+  private  List<TextView> quizOPtions;
 
-  @Override public void onCreate(Bundle savedInstanceState) {
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.play_quiz);
     QuestionGenerator generator = new QuestionGenerator();
@@ -150,7 +152,6 @@ public class QuizPlayScreen extends Activity {
       public void onFinish() {
         countDown.setText("0");
         countDown.setTextColor(Color.RED);
-        System.out.println("Timedoutcheck  "+ (checkGameOver == 1));
         if(checkGameOver == 1) {
           checkGameOver++;
           gameOver("TIMED OUT\nGAME OVER");
@@ -220,8 +221,6 @@ public class QuizPlayScreen extends Activity {
     }, 1000);
   }
 
-
-
   private void unClickable(boolean click) {
     option1.setClickable(click);
     option2.setClickable(click);
@@ -244,33 +243,32 @@ public class QuizPlayScreen extends Activity {
     btnFiftyfifty = (Button)findViewById(R.id.btn_fiftyfifty);
     btnFiftyfifty.setOnClickListener(new OnClickListener() {
       @Override public void onClick(View v) {
-        List<TextView> quizOPtions = new ArrayList<TextView>();
-        if (QuizPlayScreen.option1.getText().equals("A: "+QuizPlayScreen.quizEntries.get(QuizPlayScreen.quizId).answer)) {
-          System.out.println("check  ");
-          quizOPtions.add(QuizPlayScreen.option2);
-          quizOPtions.add(QuizPlayScreen.option3);
-          quizOPtions.add(QuizPlayScreen.option4);
+        quizOPtions = new ArrayList<TextView>();
+        if (option1.getText().equals("A: "+quizEntries.get(quizId).answer)) {
+          quizOPtions.add(option2);
+          quizOPtions.add(option3);
+          quizOPtions.add(option4);
           Collections.shuffle(quizOPtions);
           quizOPtions.get(0).setText("");
           quizOPtions.get(1).setText("");
-        } else if (QuizPlayScreen.option2.getText().equals("B: "+QuizPlayScreen.quizEntries.get(QuizPlayScreen.quizId).answer)) {
-          quizOPtions.add(QuizPlayScreen.option1);
-          quizOPtions.add(QuizPlayScreen.option3);
-          quizOPtions.add(QuizPlayScreen.option4);
+        } else if (option2.getText().equals("B: "+quizEntries.get(quizId).answer)) {
+          quizOPtions.add(option1);
+          quizOPtions.add(option3);
+          quizOPtions.add(option4);
           Collections.shuffle(quizOPtions);
           quizOPtions.get(0).setText("");
           quizOPtions.get(1).setText("");
-        } else if (QuizPlayScreen.option3.getText().equals("C: "+QuizPlayScreen.quizEntries.get(QuizPlayScreen.quizId).answer)) {
-          quizOPtions.add(QuizPlayScreen.option1);
-          quizOPtions.add(QuizPlayScreen.option2);
-          quizOPtions.add(QuizPlayScreen.option4);
+        } else if (option3.getText().equals("C: "+quizEntries.get(quizId).answer)) {
+          quizOPtions.add(option1);
+          quizOPtions.add(option2);
+          quizOPtions.add(option4);
           Collections.shuffle(quizOPtions);
           quizOPtions.get(0).setText("");
           quizOPtions.get(1).setText("");
-        } else if (QuizPlayScreen.option4.getText().equals("D: "+QuizPlayScreen.quizEntries.get(QuizPlayScreen.quizId).answer)) {
-          quizOPtions.add(QuizPlayScreen.option1);
-          quizOPtions.add(QuizPlayScreen.option2);
-          quizOPtions.add(QuizPlayScreen.option3);
+        } else if (option4.getText().equals("D: "+quizEntries.get(quizId).answer)) {
+          quizOPtions.add(option1);
+          quizOPtions.add(option2);
+          quizOPtions.add(option3);
           Collections.shuffle(quizOPtions);
           quizOPtions.get(0).setText("");
           quizOPtions.get(1).setText("");
@@ -351,8 +349,7 @@ public class QuizPlayScreen extends Activity {
   }
 
   public void gameOver(final String toastDisplayText) {
-    System.out.println("checkGameOver  "+checkGameOver);
-    if (checkGameOver == 2) {
+    if (checkGameOver == GAME_OVER_CHECKER) {
       new Handler().postDelayed(new Runnable() {
         @Override public void run() {
           showToast(Color.RED, toastDisplayText);
