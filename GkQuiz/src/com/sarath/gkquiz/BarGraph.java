@@ -32,19 +32,19 @@ public class BarGraph {
         switch (id) {
         case 0:
           percentageCalculation();
-          graphInitialization(balance0,balance1,balance2,balance3);
+          graphInitialization(balance0, balance1, balance2, balance3);
           break;
         case 1:
           percentageCalculation();
-          graphInitialization(balance1,balance0,balance2,balance3);
+          graphInitialization(balance1, balance0, balance2, balance3);
           break;
         case 2:
           percentageCalculation();
-          graphInitialization(balance2,balance1,balance0,balance3);
+          graphInitialization(balance2, balance1, balance0, balance3);
           break;
         case 3:
           percentageCalculation();
-          graphInitialization(balance3,balance1,balance2,balance0);
+          graphInitialization(balance3, balance1, balance2, balance0);
           break;
         default:
           break;
@@ -122,16 +122,16 @@ public class BarGraph {
     return intent;
   }
 
-  private void graphInitialization(int first, int second, int third, int fourth){
-    optionPercentage[0] =first;
-    optionPercentage[1] =second;
-    optionPercentage[2] =third;
-    optionPercentage[3] =fourth;
+  private void graphInitialization(int first, int second, int third, int fourth) {
+    optionPercentage[0] = first;
+    optionPercentage[1] = second;
+    optionPercentage[2] = third;
+    optionPercentage[3] = fourth;
   }
 
   private void percentageCalculation() {
     balance0 = (50 + randomObject.nextInt(10));
-    balance1 =(100-balance0)/4;
+    balance1 = (100-balance0)/4;
     int temp1 = (100-(balance1+balance0))/3;
     balance2 = temp1*2;
     balance3 = temp1;
