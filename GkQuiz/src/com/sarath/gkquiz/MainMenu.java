@@ -12,7 +12,7 @@ import android.widget.Button;
  *
  * @author sarath prakash
  */
-public class MainMenu extends Activity implements OnClickListener{
+public class MainMenu extends Activity implements OnClickListener {
   Button butPlay ,butSettings,butExit;
 
   @Override
@@ -27,8 +27,7 @@ public class MainMenu extends Activity implements OnClickListener{
     butExit.setOnClickListener(this);
   }
 
-  @Override
-  public void onClick(View v) {
+  @Override public void onClick(View v) {
     switch (v.getId()) {
     case R.id.btn_play:
       Intent i = new Intent(MainMenu.this, QuizPlayScreen.class);
