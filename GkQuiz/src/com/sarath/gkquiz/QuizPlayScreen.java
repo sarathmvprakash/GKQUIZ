@@ -39,6 +39,8 @@ public class QuizPlayScreen extends Activity {
   private  Button btnAudiencePole, btnFiftyfifty;
   private int checkGameOver;
   private  List<TextView> quizOPtions;
+  private int fiftyCurrectoption;
+  private int fiftyWrongoption;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -232,10 +234,17 @@ public class QuizPlayScreen extends Activity {
     btnAudiencePole = (Button)findViewById(R.id.btn_audiencepole);
     btnAudiencePole.setOnClickListener(new Button.OnClickListener() {
     @Override public void onClick(View arg0) {
-      BarGraph bar = new BarGraph(getApplicationContext(), quizEntries.get(quizId));
-      Intent lineIntent = bar.getIntent();
-      startActivity(lineIntent);
-      btnAudiencePole.setEnabled(false);
+      if(!btnFiftyfifty.isEnabled()) {
+        BarGraph bar = new BarGraph(getApplicationContext(), quizEntries.get(quizId),fiftyCurrectoption, fiftyWrongoption);
+        Intent lineIntent = bar.getIntent();
+        startActivity(lineIntent);
+        btnAudiencePole.setEnabled(false);
+      } else {
+        BarGraph bar = new BarGraph(getApplicationContext(), quizEntries.get(quizId), 0, 0);
+        Intent lineIntent = bar.getIntent();
+        startActivity(lineIntent);
+        btnAudiencePole.setEnabled(false);
+      }
     }});
   }
 
@@ -251,6 +260,14 @@ public class QuizPlayScreen extends Activity {
           Collections.shuffle(quizOPtions);
           quizOPtions.get(0).setText("");
           quizOPtions.get(1).setText("");
+          fiftyCurrectoption = 1;
+          if (quizOPtions.get(2) == option2) {
+            fiftyWrongoption = 2;
+          } else if (quizOPtions.get(2) == option3) {
+            fiftyWrongoption = 3;
+          } else if (quizOPtions.get(2) == option4) {
+            fiftyWrongoption = 4;
+          }
         } else if (option2.getText().equals("B: "+quizEntries.get(quizId).answer)) {
           quizOPtions.add(option1);
           quizOPtions.add(option3);
@@ -258,6 +275,14 @@ public class QuizPlayScreen extends Activity {
           Collections.shuffle(quizOPtions);
           quizOPtions.get(0).setText("");
           quizOPtions.get(1).setText("");
+          fiftyCurrectoption = 2;
+          if (quizOPtions.get(2) == option1) {
+            fiftyWrongoption = 1;
+          } else if (quizOPtions.get(2) == option3) {
+            fiftyWrongoption = 3;
+          } else if (quizOPtions.get(2) == option4) {
+            fiftyWrongoption = 4;
+          }
         } else if (option3.getText().equals("C: "+quizEntries.get(quizId).answer)) {
           quizOPtions.add(option1);
           quizOPtions.add(option2);
@@ -265,6 +290,14 @@ public class QuizPlayScreen extends Activity {
           Collections.shuffle(quizOPtions);
           quizOPtions.get(0).setText("");
           quizOPtions.get(1).setText("");
+          fiftyCurrectoption = 3;
+          if (quizOPtions.get(2) == option1) {
+            fiftyWrongoption = 1;
+          } else if (quizOPtions.get(2) == option2) {
+            fiftyWrongoption = 2;
+          } else if (quizOPtions.get(2) == option4) {
+            fiftyWrongoption = 4;
+          }
         } else if (option4.getText().equals("D: "+quizEntries.get(quizId).answer)) {
           quizOPtions.add(option1);
           quizOPtions.add(option2);
@@ -272,6 +305,14 @@ public class QuizPlayScreen extends Activity {
           Collections.shuffle(quizOPtions);
           quizOPtions.get(0).setText("");
           quizOPtions.get(1).setText("");
+          fiftyCurrectoption = 4;
+          if (quizOPtions.get(2) == option1) {
+            fiftyWrongoption = 1;
+          } else if (quizOPtions.get(2) == option3) {
+            fiftyWrongoption = 3;
+          } else if (quizOPtions.get(2) == option2) {
+            fiftyWrongoption = 2;
+          }
         }
         btnFiftyfifty.setEnabled(false);
         }
