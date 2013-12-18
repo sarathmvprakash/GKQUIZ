@@ -97,11 +97,11 @@ public class QuizPlayScreen extends Activity {
       @Override public void onClick(View v) {
         clickabilityOfOptions(false);
         disableLifeLine();
-        if(selectedOption.getText().toString().substring(3).equals(quizEntries.get(quizId).answer)) {
+        if (selectedOption.getText().toString().substring(3).equals(quizEntries.get(quizId).answer)) {
           timer.cancel();
           numQuestionAnsweredCorrectly++;
           updatePrizeIndicator();
-          if(timer != null) {
+          if (timer != null) {
             timer.cancel();
             timer = null;
           }
@@ -114,7 +114,7 @@ public class QuizPlayScreen extends Activity {
         } else {
           timer.cancel();
           selectedOption.setBackgroundColor(Color.RED);
-          if(option1.getText().equals("A: "+quizEntries.get(quizId).answer)) {
+          if (option1.getText().equals("A: "+quizEntries.get(quizId).answer)) {
             option1.setBackgroundColor(Color.GREEN);
           } else if(option2.getText().equals("B: "+quizEntries.get(quizId).answer)) {
             option2.setBackgroundColor(Color.GREEN);
@@ -123,7 +123,7 @@ public class QuizPlayScreen extends Activity {
           } else if(option4.getText().equals("D: "+quizEntries.get(quizId).answer)) {
             option4.setBackgroundColor(Color.GREEN);
           }
-          if(checkGameOver == 1) {
+          if (checkGameOver == 1) {
             checkGameOver++;
             gameOver("GAME OVER");
           }
@@ -165,7 +165,7 @@ public class QuizPlayScreen extends Activity {
       public void onFinish() {
         countDown.setText("0");
         countDown.setTextColor(Color.RED);
-        if(checkGameOver == 1) {
+        if (checkGameOver == 1) {
           checkGameOver++;
           gameOver("TIMED OUT\nGAME OVER");
         }
@@ -245,11 +245,11 @@ public class QuizPlayScreen extends Activity {
     btnAudiencePole = (Button)findViewById(R.id.btn_audiencepole);
     btnAudiencePole.setOnClickListener(new Button.OnClickListener() {
     @Override public void onClick(View arg0) {
-      if(fiftyIsClicked) {
+      if (fiftyIsClicked) {
         BarGraph bar = new BarGraph(getApplicationContext(), quizEntries.get(quizId),fiftyCurrectoption, fiftyWrongoption);
         Intent lineIntent = bar.getIntent();
         startActivity(lineIntent);
-      }else {
+      } else {
         BarGraph bar = new BarGraph(getApplicationContext(), quizEntries.get(quizId), 0, 0);
         Intent lineIntent = bar.getIntent();
         startActivity(lineIntent);
@@ -273,15 +273,15 @@ public class QuizPlayScreen extends Activity {
           quizOPtions.get(0).setText("");
           quizOPtions.get(1).setText("");
           fiftyCurrectoption = 1;
-          if(quizOPtions.get(2) == option2) {
+          if (quizOPtions.get(2) == option2) {
             fiftyWrongoption = 2;
             option3.setClickable(false);
             option4.setClickable(false);
-          }else if(quizOPtions.get(2) == option3) {
+          } else if (quizOPtions.get(2) == option3) {
             fiftyWrongoption = 3;
             option2.setClickable(false);
             option4.setClickable(false);
-          }else if(quizOPtions.get(2) == option4) {
+          } else if (quizOPtions.get(2) == option4) {
             fiftyWrongoption = 4;
             option3.setClickable(false);
             option2.setClickable(false);
@@ -294,15 +294,15 @@ public class QuizPlayScreen extends Activity {
           quizOPtions.get(0).setText("");
           quizOPtions.get(1).setText("");
           fiftyCurrectoption = 2;
-          if(quizOPtions.get(2) == option1) {
+          if (quizOPtions.get(2) == option1) {
             fiftyWrongoption = 1;
             option3.setClickable(false);
             option4.setClickable(false);
-          }else if(quizOPtions.get(2) == option3) {
+          } else if (quizOPtions.get(2) == option3) {
             fiftyWrongoption = 3;
             option1.setClickable(false);
             option4.setClickable(false);
-          }else if(quizOPtions.get(2) == option4) {
+          } else if (quizOPtions.get(2) == option4) {
             fiftyWrongoption = 4;
             option3.setClickable(false);
             option1.setClickable(false);
@@ -315,15 +315,15 @@ public class QuizPlayScreen extends Activity {
           quizOPtions.get(0).setText("");
           quizOPtions.get(1).setText("");
           fiftyCurrectoption = 3;
-          if(quizOPtions.get(2) == option1) {
+          if (quizOPtions.get(2) == option1) {
             fiftyWrongoption = 1;
             option2.setClickable(false);
             option4.setClickable(false);
-          }else if(quizOPtions.get(2) == option2) {
+          } else if (quizOPtions.get(2) == option2) {
             fiftyWrongoption = 2;
             option1.setClickable(false);
             option4.setClickable(false);
-          }else if(quizOPtions.get(2) == option4) {
+          } else if (quizOPtions.get(2) == option4) {
             fiftyWrongoption = 4;
             option1.setClickable(false);
             option2.setClickable(false);
@@ -336,15 +336,15 @@ public class QuizPlayScreen extends Activity {
           quizOPtions.get(0).setText("");
           quizOPtions.get(1).setText("");
           fiftyCurrectoption = 4;
-          if(quizOPtions.get(2) == option1) {
+          if (quizOPtions.get(2) == option1) {
             fiftyWrongoption = 1;
             option3.setClickable(false);
             option2.setClickable(false);
-          }else if(quizOPtions.get(2) == option3) {
+          } else if (quizOPtions.get(2) == option3) {
             fiftyWrongoption = 3;
             option1.setClickable(false);
             option2.setClickable(false);
-          }else if(quizOPtions.get(2) == option2) {
+          } else if (quizOPtions.get(2) == option2) {
             fiftyWrongoption = 2;
             option3.setClickable(false);
             option1.setClickable(false);

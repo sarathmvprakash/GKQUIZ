@@ -40,26 +40,26 @@ public class BarGraph {
   }
 
   public Intent getIntent() {
-    if(fiftyGraphCurrectoption == 0) {
+    if (fiftyGraphCurrectoption == 0) {
       int id = 0;
       for (String option : quizEntry.getOptions()) {
-        if(option.equals(quizEntry.getAnswer())) {
+        if (option.equals(quizEntry.getAnswer())) {
           switch (id) {
           case 0:
             percentageCalculation();
-            graphInitialization(balance0,balance1,balance2,balance3);
+            graphInitialization(balance0, balance1, balance2, balance3);
             break;
           case 1:
             percentageCalculation();
-            graphInitialization(balance1,balance0,balance2,balance3);
+            graphInitialization(balance1, balance0, balance2, balance3);
             break;
           case 2:
             percentageCalculation();
-            graphInitialization(balance2,balance1,balance0,balance3);
+            graphInitialization(balance2, balance1, balance0, balance3);
             break;
           case 3:
             percentageCalculation();
-            graphInitialization(balance3,balance1,balance2,balance0);
+            graphInitialization(balance3, balance1, balance2, balance0);
             break;
           default:
             break;
@@ -135,31 +135,31 @@ public class BarGraph {
       mRenderer.addSeriesRenderer(renderer4);
       intent = ChartFactory.getBarChartIntent(context, dataset,mRenderer, Type.DEFAULT);
       return intent;
-    }else {
-      if(fiftyGraphCurrectoption == 1 && fiftyGraphWrongoption == 2) {
+    } else {
+      if (fiftyGraphCurrectoption == 1 && fiftyGraphWrongoption == 2) {
         fiftyFiftyGraph("OptionA", "OptionB", 60, 40);
-      }else if(fiftyGraphCurrectoption == 1 && fiftyGraphWrongoption == 3) {
+      } else if (fiftyGraphCurrectoption == 1 && fiftyGraphWrongoption == 3) {
         fiftyFiftyGraph("OptionA", "OptionC", 60, 40);
-      }else if(fiftyGraphCurrectoption == 1 && fiftyGraphWrongoption == 4) {
+      } else if (fiftyGraphCurrectoption == 1 && fiftyGraphWrongoption == 4) {
         fiftyFiftyGraph("OptionA", "OptionD", 60, 40);
-      }else if(fiftyGraphCurrectoption == 2 && fiftyGraphWrongoption == 1) {
+      } else if (fiftyGraphCurrectoption == 2 && fiftyGraphWrongoption == 1) {
         fiftyFiftyGraph("OptionA", "OptionB", 40, 60);
-      }else if(fiftyGraphCurrectoption == 2 && fiftyGraphWrongoption == 3) {
+      } else if (fiftyGraphCurrectoption == 2 && fiftyGraphWrongoption == 3) {
         fiftyFiftyGraph("OptionB", "OptionC", 60, 40);
-      }else if(fiftyGraphCurrectoption == 2 && fiftyGraphWrongoption == 4) {
+      } else if (fiftyGraphCurrectoption == 2 && fiftyGraphWrongoption == 4) {
         fiftyFiftyGraph("OptionB", "OptionD", 60, 40);
-      }else if(fiftyGraphCurrectoption == 3 && fiftyGraphWrongoption == 1) {
+      } else if (fiftyGraphCurrectoption == 3 && fiftyGraphWrongoption == 1) {
         fiftyFiftyGraph("OptionC", "OptionA", 60, 40);
         fiftyFiftyGraph("OptionA", "OptionC", 40, 60);
-      }else if(fiftyGraphCurrectoption == 3 && fiftyGraphWrongoption == 2) {
+      } else if (fiftyGraphCurrectoption == 3 && fiftyGraphWrongoption == 2) {
         fiftyFiftyGraph("OptionB", "OptionC", 40, 60);
-      }else if(fiftyGraphCurrectoption == 3 && fiftyGraphWrongoption == 4) {
+      } else if (fiftyGraphCurrectoption == 3 && fiftyGraphWrongoption == 4) {
         fiftyFiftyGraph("OptionC", "OptionD", 60, 40);
-      }else if(fiftyGraphCurrectoption == 4 && fiftyGraphWrongoption == 1) {
+      } else if (fiftyGraphCurrectoption == 4 && fiftyGraphWrongoption == 1) {
         fiftyFiftyGraph("OptionA", "OptionD", 40, 60);
-      }else if(fiftyGraphCurrectoption == 4 && fiftyGraphWrongoption == 2) {
+      } else if (fiftyGraphCurrectoption == 4 && fiftyGraphWrongoption == 2) {
         fiftyFiftyGraph("OptionB", "OptionD", 40, 60);
-      }else if(fiftyGraphCurrectoption == 4 && fiftyGraphWrongoption == 3) {
+      } else if (fiftyGraphCurrectoption == 4 && fiftyGraphWrongoption == 3) {
         fiftyFiftyGraph("OptionC", "OptionD", 40, 60);
       }
       return intent;
