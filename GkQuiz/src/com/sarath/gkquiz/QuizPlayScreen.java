@@ -14,20 +14,20 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 /**
  * This class is used for quiz board.
  *
  * @author sarath prakash.
  */
+
 public class QuizPlayScreen extends Activity {
   private TextView[] textIndicator;
   private TextView question;
-  private  TextView option1;
-  private  TextView option2;
-  private  TextView option3;
-  private  TextView option4;
-  private  TextView countDown;
+  private TextView option1;
+  private TextView option2;
+  private TextView option3;
+  private TextView option4;
+  private TextView countDown;
   private int quizLimit;
   static int quizId;
   private  List<QuizEntry> quizEntries;
@@ -36,9 +36,15 @@ public class QuizPlayScreen extends Activity {
   private static final int DELAY_MILLIS = 4000;
   private static final int GAME_OVER_CHECKER = 2;
   private Toast toast;
-  private  Button btnAudiencePole, btnFiftyfifty;
+  private  Button btnAudiencePole;
+  private  Button btnFiftyfifty;
   private int checkGameOver;
   private  List<TextView> quizOPtions;
+  private int fiftyCurrectoption;
+  private int fiftyWrongoption;
+  private boolean fiftyIsClicked;
+  private boolean currentClickabilityOfFiftyFiftyOption;
+  private boolean currentClickabilityOfAudiencePoleOption;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +78,8 @@ public class QuizPlayScreen extends Activity {
     textIndicator[13] = (TextView)findViewById(R.id.tv_rs500000);
     textIndicator[14] = (TextView)findViewById(R.id.tv_1million);
     countDown = (TextView)findViewById(R.id.tv_countdown);
+    currentClickabilityOfFiftyFiftyOption = true;
+    currentClickabilityOfAudiencePoleOption = true;
     updateQuiz();
     audiencePole();
     fiftyFifty();
@@ -80,44 +88,48 @@ public class QuizPlayScreen extends Activity {
     setOnClickListener(option3);
     setOnClickListener(option4);
     updatePrizeIndicator();
+    fiftyCurrectoption = 0;
+    fiftyWrongoption = 0;
   }
 
   private void setOnClickListener(final TextView selectedOption) {
-  selectedOption.setOnClickListener(new OnClickListener() {
-    @Override public void onClick(View v) {
-      if(selectedOption.getText().toString().substring(3).equals(quizEntries.get(quizId).answer)) {
-        timer.cancel();
-        numQuestionAnsweredCorrectly++;
-        updatePrizeIndicator();
-        if(timer != null) {
+    selectedOption.setOnClickListener(new OnClickListener() {
+      @Override public void onClick(View v) {
+        clickabilityOfOptions(false);
+        disableLifeLine();
+        if (selectedOption.getText().toString().substring(3).equals(quizEntries.get(quizId).answer)) {
           timer.cancel();
-          timer = null;
+          numQuestionAnsweredCorrectly++;
+          updatePrizeIndicator();
+          if (timer != null) {
+            timer.cancel();
+            timer = null;
+          }
+          selectedOption.setBackgroundColor(Color.GREEN);
+          ++quizId;
+          displayAmountWon();
+          delay();
+          btnAudiencePole.setClickable(currentClickabilityOfAudiencePoleOption);
+          btnFiftyfifty.setClickable(currentClickabilityOfFiftyFiftyOption);
+        } else {
+          timer.cancel();
+          selectedOption.setBackgroundColor(Color.RED);
+          if (option1.getText().equals("A: "+quizEntries.get(quizId).answer)) {
+            option1.setBackgroundColor(Color.GREEN);
+          } else if(option2.getText().equals("B: "+quizEntries.get(quizId).answer)) {
+            option2.setBackgroundColor(Color.GREEN);
+          } else if(option3.getText().equals("C: "+quizEntries.get(quizId).answer)) {
+            option3.setBackgroundColor(Color.GREEN);
+          } else if(option4.getText().equals("D: "+quizEntries.get(quizId).answer)) {
+            option4.setBackgroundColor(Color.GREEN);
+          }
+          if (checkGameOver == 1) {
+            checkGameOver++;
+            gameOver("GAME OVER");
+          }
         }
-        selectedOption.setBackgroundColor(Color.GREEN);
-        unClickable(false);
-        ++quizId;
-        displayAmountWon();
-        delay();
-      } else {
-        timer.cancel();
-        selectedOption.setBackgroundColor(Color.RED);
-        if(option1.getText().equals("A: "+quizEntries.get(quizId).answer)) {
-          option1.setBackgroundColor(Color.GREEN);
-        } else if(option2.getText().equals("B: "+quizEntries.get(quizId).answer)) {
-          option2.setBackgroundColor(Color.GREEN);
-        } else if(option3.getText().equals("C: "+quizEntries.get(quizId).answer)) {
-          option3.setBackgroundColor(Color.GREEN);
-        } else if(option4.getText().equals("D: "+quizEntries.get(quizId).answer)) {
-          option4.setBackgroundColor(Color.GREEN);
-        }
-        if(checkGameOver == 1) {
-          checkGameOver++;
-          gameOver("GAME OVER");
-        }
-        unClickable(false);
       }
-    }
-  });
+    });
   }
 
   private void showToast(int color, String post) {
@@ -128,6 +140,7 @@ public class QuizPlayScreen extends Activity {
 
   private void updateQuiz() {
     if (quizId < quizLimit) {
+      fiftyIsClicked = false;
       countdownTimer();
       int blueColor = getResources().getColor(R.color.blue);
       option1.setBackgroundColor(blueColor);
@@ -141,7 +154,7 @@ public class QuizPlayScreen extends Activity {
       option3.setText("C: "+entry.options.get(2));
       option4.setText("D: "+entry.options.get(3));
     }
-    unClickable(true);
+    clickabilityOfOptions(true);
   }
 
   private void countdownTimer() {
@@ -152,7 +165,7 @@ public class QuizPlayScreen extends Activity {
       public void onFinish() {
         countDown.setText("0");
         countDown.setTextColor(Color.RED);
-        if(checkGameOver == 1) {
+        if (checkGameOver == 1) {
           checkGameOver++;
           gameOver("TIMED OUT\nGAME OVER");
         }
@@ -221,7 +234,7 @@ public class QuizPlayScreen extends Activity {
     }, 1000);
   }
 
-  private void unClickable(boolean click) {
+  private void clickabilityOfOptions(boolean click) {
     option1.setClickable(click);
     option2.setClickable(click);
     option3.setClickable(click);
@@ -232,10 +245,17 @@ public class QuizPlayScreen extends Activity {
     btnAudiencePole = (Button)findViewById(R.id.btn_audiencepole);
     btnAudiencePole.setOnClickListener(new Button.OnClickListener() {
     @Override public void onClick(View arg0) {
-      BarGraph bar = new BarGraph(getApplicationContext(), quizEntries.get(quizId));
-      Intent lineIntent = bar.getIntent();
-      startActivity(lineIntent);
+      if (fiftyIsClicked) {
+        BarGraph bar = new BarGraph(getApplicationContext(), quizEntries.get(quizId),fiftyCurrectoption, fiftyWrongoption);
+        Intent lineIntent = bar.getIntent();
+        startActivity(lineIntent);
+      } else {
+        BarGraph bar = new BarGraph(getApplicationContext(), quizEntries.get(quizId), 0, 0);
+        Intent lineIntent = bar.getIntent();
+        startActivity(lineIntent);
+      }
       btnAudiencePole.setEnabled(false);
+      currentClickabilityOfAudiencePoleOption = false;
     }});
   }
 
@@ -243,6 +263,7 @@ public class QuizPlayScreen extends Activity {
     btnFiftyfifty = (Button)findViewById(R.id.btn_fiftyfifty);
     btnFiftyfifty.setOnClickListener(new OnClickListener() {
       @Override public void onClick(View v) {
+        fiftyIsClicked = true;
         quizOPtions = new ArrayList<TextView>();
         if (option1.getText().equals("A: "+quizEntries.get(quizId).answer)) {
           quizOPtions.add(option2);
@@ -251,6 +272,20 @@ public class QuizPlayScreen extends Activity {
           Collections.shuffle(quizOPtions);
           quizOPtions.get(0).setText("");
           quizOPtions.get(1).setText("");
+          fiftyCurrectoption = 1;
+          if (quizOPtions.get(2) == option2) {
+            fiftyWrongoption = 2;
+            option3.setClickable(false);
+            option4.setClickable(false);
+          } else if (quizOPtions.get(2) == option3) {
+            fiftyWrongoption = 3;
+            option2.setClickable(false);
+            option4.setClickable(false);
+          } else if (quizOPtions.get(2) == option4) {
+            fiftyWrongoption = 4;
+            option3.setClickable(false);
+            option2.setClickable(false);
+          }
         } else if (option2.getText().equals("B: "+quizEntries.get(quizId).answer)) {
           quizOPtions.add(option1);
           quizOPtions.add(option3);
@@ -258,6 +293,20 @@ public class QuizPlayScreen extends Activity {
           Collections.shuffle(quizOPtions);
           quizOPtions.get(0).setText("");
           quizOPtions.get(1).setText("");
+          fiftyCurrectoption = 2;
+          if (quizOPtions.get(2) == option1) {
+            fiftyWrongoption = 1;
+            option3.setClickable(false);
+            option4.setClickable(false);
+          } else if (quizOPtions.get(2) == option3) {
+            fiftyWrongoption = 3;
+            option1.setClickable(false);
+            option4.setClickable(false);
+          } else if (quizOPtions.get(2) == option4) {
+            fiftyWrongoption = 4;
+            option3.setClickable(false);
+            option1.setClickable(false);
+          }
         } else if (option3.getText().equals("C: "+quizEntries.get(quizId).answer)) {
           quizOPtions.add(option1);
           quizOPtions.add(option2);
@@ -265,6 +314,20 @@ public class QuizPlayScreen extends Activity {
           Collections.shuffle(quizOPtions);
           quizOPtions.get(0).setText("");
           quizOPtions.get(1).setText("");
+          fiftyCurrectoption = 3;
+          if (quizOPtions.get(2) == option1) {
+            fiftyWrongoption = 1;
+            option2.setClickable(false);
+            option4.setClickable(false);
+          } else if (quizOPtions.get(2) == option2) {
+            fiftyWrongoption = 2;
+            option1.setClickable(false);
+            option4.setClickable(false);
+          } else if (quizOPtions.get(2) == option4) {
+            fiftyWrongoption = 4;
+            option1.setClickable(false);
+            option2.setClickable(false);
+          }
         } else if (option4.getText().equals("D: "+quizEntries.get(quizId).answer)) {
           quizOPtions.add(option1);
           quizOPtions.add(option2);
@@ -272,8 +335,23 @@ public class QuizPlayScreen extends Activity {
           Collections.shuffle(quizOPtions);
           quizOPtions.get(0).setText("");
           quizOPtions.get(1).setText("");
+          fiftyCurrectoption = 4;
+          if (quizOPtions.get(2) == option1) {
+            fiftyWrongoption = 1;
+            option3.setClickable(false);
+            option2.setClickable(false);
+          } else if (quizOPtions.get(2) == option3) {
+            fiftyWrongoption = 3;
+            option1.setClickable(false);
+            option2.setClickable(false);
+          } else if (quizOPtions.get(2) == option2) {
+            fiftyWrongoption = 2;
+            option3.setClickable(false);
+            option1.setClickable(false);
+          }
         }
         btnFiftyfifty.setEnabled(false);
+        currentClickabilityOfFiftyFiftyOption = false;
         }
     });
   }
@@ -366,5 +444,10 @@ public class QuizPlayScreen extends Activity {
         }
       }, DELAY_MILLIS);
     }
+  }
+
+  public void disableLifeLine() {
+    btnAudiencePole.setClickable(false);
+    btnFiftyfifty.setClickable(false);
   }
 }

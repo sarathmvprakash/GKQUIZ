@@ -6,12 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-
 /**
  * This class contain the main menu.
  *
  * @author sarath prakash
  */
+
 public class MainMenu extends Activity implements OnClickListener {
   Button butPlay ,butSettings,butExit;
 
