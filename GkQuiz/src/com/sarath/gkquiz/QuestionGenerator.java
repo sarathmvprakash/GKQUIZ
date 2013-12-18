@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 /**
  * This class is used for adding questions, 4 options and answers.
  *
  * @author sarath prakash.
  */
+
 public class QuestionGenerator {
   private final List<QuizEntry> quizEntries;
 

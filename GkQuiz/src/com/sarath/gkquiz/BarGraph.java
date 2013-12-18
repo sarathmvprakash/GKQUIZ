@@ -11,46 +11,55 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
+/**
+ * This class contain the bar graph.
+ *
+ * @author sarath prakash
+ */
 
 public class BarGraph {
   private final Context context;
   private final QuizEntry quizEntry;
-  private Random randomObject = new Random();
+  private int fiftyGraphCurrectoption;
+  private int fiftyGraphWrongoption;
+  private Random randomObject;
   private int[] optionPercentage;
-  private int balance0, balance1, balance2, balance3;
+  private int balance0;
+  private int balance1;
+  private int balance2;
+  private int balance3;
   private Intent intent;
-  private int fiftyFiftyClickedCorrectOption;
-  private int fiftyFiftyClickedWrongOption;
 
-  public BarGraph(Context context, QuizEntry quizEntry, int fiftyFiftyClickedCorrectOption, int fiftyFiftyClickedWrongOption) {
-    optionPercentage = new int[4];
+  public BarGraph(Context context, QuizEntry quizEntry, int fiftyGraphCurrectoption, int fiftyGraphWrongoption) {
     this.context = context;
     this.quizEntry = quizEntry;
-    this.fiftyFiftyClickedCorrectOption = fiftyFiftyClickedCorrectOption;
-    this.fiftyFiftyClickedWrongOption = fiftyFiftyClickedWrongOption;
+    this.fiftyGraphCurrectoption = fiftyGraphCurrectoption;
+    this.fiftyGraphWrongoption = fiftyGraphWrongoption;
+    optionPercentage = new int[4];
+    randomObject = new Random();
   }
 
   public Intent getIntent() {
-    if(fiftyFiftyClickedCorrectOption == 0) {
+    if(fiftyGraphCurrectoption == 0) {
       int id = 0;
       for (String option : quizEntry.getOptions()) {
         if(option.equals(quizEntry.getAnswer())) {
           switch (id) {
           case 0:
             percentageCalculation();
-            graphInitialization(balance0, balance1, balance2, balance3);
+            graphInitialization(balance0,balance1,balance2,balance3);
             break;
           case 1:
             percentageCalculation();
-            graphInitialization(balance1, balance0, balance2, balance3);
+            graphInitialization(balance1,balance0,balance2,balance3);
             break;
           case 2:
             percentageCalculation();
-            graphInitialization(balance2, balance1, balance0, balance3);
+            graphInitialization(balance2,balance1,balance0,balance3);
             break;
           case 3:
             percentageCalculation();
-            graphInitialization(balance3, balance1, balance2, balance0);
+            graphInitialization(balance3,balance1,balance2,balance0);
             break;
           default:
             break;
@@ -126,35 +135,37 @@ public class BarGraph {
       mRenderer.addSeriesRenderer(renderer4);
       intent = ChartFactory.getBarChartIntent(context, dataset,mRenderer, Type.DEFAULT);
       return intent;
-      } else {
-        if(fiftyFiftyClickedCorrectOption == 1 && fiftyFiftyClickedWrongOption == 2) {
-          fiftyFiftyGraph("OptionA", "OptionB", 60, 40);
-        } else if(fiftyFiftyClickedCorrectOption == 1 && fiftyFiftyClickedWrongOption == 3) {
-          fiftyFiftyGraph("OptionA", "OptionC", 60, 40);
-        } else if(fiftyFiftyClickedCorrectOption == 1 && fiftyFiftyClickedWrongOption == 4) {
-          fiftyFiftyGraph("OptionA", "OptionD", 60, 40);
-        } else if(fiftyFiftyClickedCorrectOption == 2 && fiftyFiftyClickedWrongOption == 1) {
-          fiftyFiftyGraph("OptionB", "OptionA", 60, 40);
-        } else if(fiftyFiftyClickedCorrectOption == 2 && fiftyFiftyClickedWrongOption == 3) {
-          fiftyFiftyGraph("OptionB", "OptionC", 60, 40);
-        } else if(fiftyFiftyClickedCorrectOption == 2 && fiftyFiftyClickedWrongOption == 4) {
-          fiftyFiftyGraph("OptionB", "OptionD", 60, 40);
-        } else if(fiftyFiftyClickedCorrectOption == 3 && fiftyFiftyClickedWrongOption == 1) {
-          fiftyFiftyGraph("OptionC", "OptionA", 60, 40);
-        } else if(fiftyFiftyClickedCorrectOption == 3 && fiftyFiftyClickedWrongOption == 2) {
-          fiftyFiftyGraph("OptionC", "OptionB", 60, 40);
-        } else if(fiftyFiftyClickedCorrectOption == 3 && fiftyFiftyClickedWrongOption == 4) {
-          fiftyFiftyGraph("OptionC", "OptionD", 60, 40);
-        } else if(fiftyFiftyClickedCorrectOption == 4 && fiftyFiftyClickedWrongOption == 1) {
-          fiftyFiftyGraph("OptionD", "OptionA", 60, 40);
-        } else if(fiftyFiftyClickedCorrectOption == 4 && fiftyFiftyClickedWrongOption == 2) {
-          fiftyFiftyGraph("OptionD", "OptionB", 60, 40);
-        } else if(fiftyFiftyClickedCorrectOption == 4 && fiftyFiftyClickedWrongOption == 3) {
-          fiftyFiftyGraph("OptionD", "OptionC", 60, 40);
-        }
-        return intent;
+    }else {
+      if(fiftyGraphCurrectoption == 1 && fiftyGraphWrongoption == 2) {
+        fiftyFiftyGraph("OptionA", "OptionB", 60, 40);
+      }else if(fiftyGraphCurrectoption == 1 && fiftyGraphWrongoption == 3) {
+        fiftyFiftyGraph("OptionA", "OptionC", 60, 40);
+      }else if(fiftyGraphCurrectoption == 1 && fiftyGraphWrongoption == 4) {
+        fiftyFiftyGraph("OptionA", "OptionD", 60, 40);
+      }else if(fiftyGraphCurrectoption == 2 && fiftyGraphWrongoption == 1) {
+        fiftyFiftyGraph("OptionA", "OptionB", 40, 60);
+      }else if(fiftyGraphCurrectoption == 2 && fiftyGraphWrongoption == 3) {
+        fiftyFiftyGraph("OptionB", "OptionC", 60, 40);
+      }else if(fiftyGraphCurrectoption == 2 && fiftyGraphWrongoption == 4) {
+        fiftyFiftyGraph("OptionB", "OptionD", 60, 40);
+      }else if(fiftyGraphCurrectoption == 3 && fiftyGraphWrongoption == 1) {
+        fiftyFiftyGraph("OptionC", "OptionA", 60, 40);
+        fiftyFiftyGraph("OptionA", "OptionC", 40, 60);
+      }else if(fiftyGraphCurrectoption == 3 && fiftyGraphWrongoption == 2) {
+        fiftyFiftyGraph("OptionB", "OptionC", 40, 60);
+      }else if(fiftyGraphCurrectoption == 3 && fiftyGraphWrongoption == 4) {
+        fiftyFiftyGraph("OptionC", "OptionD", 60, 40);
+      }else if(fiftyGraphCurrectoption == 4 && fiftyGraphWrongoption == 1) {
+        fiftyFiftyGraph("OptionA", "OptionD", 40, 60);
+      }else if(fiftyGraphCurrectoption == 4 && fiftyGraphWrongoption == 2) {
+        fiftyFiftyGraph("OptionB", "OptionD", 40, 60);
+      }else if(fiftyGraphCurrectoption == 4 && fiftyGraphWrongoption == 3) {
+        fiftyFiftyGraph("OptionC", "OptionD", 40, 60);
+      }
+      return intent;
     }
   }
+
   private void fiftyFiftyGraph(String option1, String option2, int opt1Percetage, int opt2Percetage) {
     XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
     XYSeries optionA = new XYSeries(option1);
@@ -178,8 +189,8 @@ public class BarGraph {
     mRenderer.setChartTitleTextSize(40);
     mRenderer.setLabelsTextSize(15);
     mRenderer.setLegendTextSize(15);
-    mRenderer.addXTextLabel(1, "Option A");
-    mRenderer.addXTextLabel(2, "Option B");
+    mRenderer.addXTextLabel(1, option1);
+    mRenderer.addXTextLabel(2, option2);
     mRenderer.setXAxisMin(0);
     mRenderer.setXAxisMax(5);
     mRenderer.setYAxisMin(0);
@@ -200,7 +211,7 @@ public class BarGraph {
     renderer2.setChartValuesSpacing((float) 0);
     renderer2.setChartValuesTextSize(30);
     mRenderer.addSeriesRenderer(renderer2);
-    intent = ChartFactory.getBarChartIntent(context, dataset,mRenderer, Type.DEFAULT);
+    intent = ChartFactory.getBarChartIntent(context, dataset, mRenderer, Type.DEFAULT);
   }
 
   private void graphInitialization(int first, int second, int third, int fourth) {
