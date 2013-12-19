@@ -13,13 +13,15 @@ import android.preference.PreferenceManager;
 
 public class Sound {
   private final Context context;
-  private MediaPlayer mediaPlayer;
-  private MediaPlayer mediaPlayer2;
+  private MediaPlayer firstMediaPlayer;
+  private MediaPlayer secondMediaPlayer;
   private int startingBackgoundSound;
   private int normalBackgoundSound;
   private int rightAnswerBackgoundSound;
   private int wrongAnswerBackgoundSound;
   private int currentBackgroundSoundPaying;
+  private static final int START_BACKGROUND_SOUND = 1;
+  private static final int NORMAL_BACKGROUND_SOUND = 2;
 
   public Sound(Context context) {
     this.context = context;
@@ -30,55 +32,55 @@ public class Sound {
   }
 
   public void checkSoundFinishedPlaying() {
-    mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+    firstMediaPlayer.setOnCompletionListener(new OnCompletionListener() {
       public void onCompletion(MediaPlayer mp) {
-        currentBackgroundSoundPaying = 2;
-        mediaPlayer.stop();
+        currentBackgroundSoundPaying = NORMAL_BACKGROUND_SOUND;
+        firstMediaPlayer.stop();
         normalBackgroundSound();
       }
     });
   }
 
   public void startBackgroundSound() {
-    if (!isSoundEnabled()) {
-      currentBackgroundSoundPaying = 1;
-      mediaPlayer = MediaPlayer.create(context, startingBackgoundSound);
-      mediaPlayer.start();
+    if (!isSoundMuted()) {
+      currentBackgroundSoundPaying = START_BACKGROUND_SOUND;
+      firstMediaPlayer = MediaPlayer.create(context, startingBackgoundSound);
+      firstMediaPlayer.start();
       checkSoundFinishedPlaying();
     }
   }
 
   public void normalBackgroundSound() {
-    mediaPlayer2 = MediaPlayer.create(context, normalBackgoundSound);
-    mediaPlayer2.setLooping(true);
-    mediaPlayer2.start();
+    secondMediaPlayer = MediaPlayer.create(context, normalBackgoundSound);
+    secondMediaPlayer.setLooping(true);
+    secondMediaPlayer.start();
   }
 
   public void rightAnswerBackgroundSound() {
-    if (!isSoundEnabled()) {
-      mediaPlayer = MediaPlayer.create(context, rightAnswerBackgoundSound);
-      mediaPlayer.start();
+    if (!isSoundMuted()) {
+      firstMediaPlayer = MediaPlayer.create(context, rightAnswerBackgoundSound);
+      firstMediaPlayer.start();
     }
   }
 
   public void wrongAnswerBackgroundSound() {
-    if (!isSoundEnabled()) {
+    if (!isSoundMuted()) {
       stopMusic();
-      mediaPlayer = MediaPlayer.create(context, wrongAnswerBackgoundSound);
-      mediaPlayer.start();
+      firstMediaPlayer = MediaPlayer.create(context, wrongAnswerBackgoundSound);
+      firstMediaPlayer.start();
     }
   }
 
   public void stopMusic() {
     if (currentBackgroundSoundPaying == 1) {
-      mediaPlayer.stop();
+      firstMediaPlayer.stop();
     } else {
-      mediaPlayer2.stop();
+      secondMediaPlayer.stop();
     }
   }
 
-  private boolean isSoundEnabled() {
+  private boolean isSoundMuted() {
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-    return sp.getBoolean("CHECKBOX", true);
+    return sp.getBoolean("CHECKBOX", false);
   }
 }

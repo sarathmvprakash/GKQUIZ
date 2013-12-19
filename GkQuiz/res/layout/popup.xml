@@ -21,6 +21,7 @@
     android:layout_marginLeft="40dp"
     android:textColor="#F5EBEB"
     android:textSize="15sp"
+    android:checked="false"
     android:text="@string/mute"/>
   <Button
     android:id="@+id/btn_close_popup"
