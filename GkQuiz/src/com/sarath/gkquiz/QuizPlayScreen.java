@@ -45,11 +45,14 @@ public class QuizPlayScreen extends Activity {
   private boolean fiftyIsClicked;
   private boolean currentClickabilityOfFiftyFiftyOption;
   private boolean currentClickabilityOfAudiencePoleOption;
+  private Sound sound;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.play_quiz);
+    sound  = new Sound(this);
+    sound.startBackgroundSound();
     QuestionGenerator generator = new QuestionGenerator();
     quizEntries = generator.getQuizEntries();
     quizLimit = quizEntries.size();
@@ -98,6 +101,7 @@ public class QuizPlayScreen extends Activity {
         clickabilityOfOptions(false);
         disableLifeLine();
         if (selectedOption.getText().toString().substring(3).equals(quizEntries.get(quizId).answer)) {
+          sound.rightAnswerBackgroundSound();
           timer.cancel();
           numQuestionAnsweredCorrectly++;
           updatePrizeIndicator();
@@ -112,6 +116,7 @@ public class QuizPlayScreen extends Activity {
           btnAudiencePole.setClickable(currentClickabilityOfAudiencePoleOption);
           btnFiftyfifty.setClickable(currentClickabilityOfFiftyFiftyOption);
         } else {
+          sound.wrongAnswerBackgroundSound();
           timer.cancel();
           selectedOption.setBackgroundColor(Color.RED);
           if (option1.getText().equals("A: "+quizEntries.get(quizId).answer)) {
@@ -168,6 +173,7 @@ public class QuizPlayScreen extends Activity {
         if (checkGameOver == 1) {
           checkGameOver++;
           gameOver("TIMED OUT\nGAME OVER");
+          sound.wrongAnswerBackgroundSound();
         }
       }
     }.start();
@@ -221,6 +227,7 @@ public class QuizPlayScreen extends Activity {
       showToast(Color.GREEN, "WON Rs 5,00,000");
       break;
     case 15:
+      sound.stopMusic();
       showToast(Color.GREEN, "WON Rs 1 Million");
       break;
     }

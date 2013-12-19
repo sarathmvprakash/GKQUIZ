@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+  android:layout_width="fill_parent"
+  android:id="@+id/popup_element11"
+  android:layout_height="fill_parent" 
+  android:background="#187587" 
+  android:orientation="vertical" 
+  android:padding="10sp" >
+  <TextView
+    android:id="@+id/txtView" 
+    android:layout_width="wrap_content" 
+    android:layout_height="wrap_content" 
+    android:layout_marginTop="20dp" 
+    android:layout_marginLeft="50dp" 
+    android:textColor="#F5EBEB"
+    android:text="@string/settings"/>
+  <CheckBox
+    android:id="@+id/chkbox_mute"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="40dp"
+    android:textColor="#F5EBEB"
+    android:textSize="15sp"
+    android:text="@string/mute"/>
+  <Button
+    android:id="@+id/btn_close_popup"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginTop="15dp"
+    android:textSize="10sp"
+    android:text="@string/close"/>
+</LinearLayout>
