@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:background="#041A37"
+    android:layout_height="fill_parent" >
+<RelativeLayout
   android:layout_width="wrap_content"
-  android:layout_height="match_parent"
-  android:background="#041A37"
+  android:layout_height="wrap_content"
   android:padding="10dp">
   <RelativeLayout
     android:id="@+id/relativeLayout1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="205dp"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="500dp"
     android:layout_marginLeft="182dp">
     <TextView
       android:id="@+id/tv_1million"
@@ -115,7 +118,6 @@
       android:text="@string/Rs100"
       android:textColor="#EEE12E"/>
   </RelativeLayout>
-
   <LinearLayout
     android:id="@+id/linearLayout1"
     android:layout_width="match_parent"
@@ -143,7 +145,6 @@
         android:text="@string/choice1"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFFFFF"/>
-
       <TextView
           android:id="@+id/tv_choice_2"
           android:layout_width="match_parent"
@@ -153,7 +154,6 @@
           android:text="@string/choice2"
           android:textAppearance="?android:attr/textAppearanceMedium"
           android:textColor="#FFFFFF" />
-
     </LinearLayout>
     <LinearLayout
       android:layout_width="match_parent"
@@ -180,7 +180,6 @@
         android:textColor="#FFFFFF"/>
     </LinearLayout>
   </LinearLayout>
-
   <Button
       android:id="@+id/btn_audiencepole"
       android:layout_width="wrap_content"
@@ -190,7 +189,6 @@
       android:onClick="lifelineactivity"
       android:layout_marginBottom="32dp"
       android:text="@string/audiancepole" />
-
   <TextView
       android:id="@+id/tv_countdown"
       android:layout_width="wrap_content"
@@ -202,7 +200,6 @@
       android:text="@string/countdown"
       android:textAppearance="?android:attr/textAppearanceLarge"
       android:textColor="#81FC7C" />
-
   <Button
       android:id="@+id/btn_fiftyfifty"
       android:layout_width="wrap_content"
@@ -211,5 +208,5 @@
       android:layout_alignBottom="@+id/btn_audiencepole"
       android:layout_toRightOf="@+id/btn_audiencepole"
       android:text="@string/fiftyfifty" />
-
 </RelativeLayout>
+</ScrollView>

@@ -33,7 +33,7 @@ public class QuizPlayScreen extends Activity {
   private  List<QuizEntry> quizEntries;
   private CountDownTimer timer;
   private int numQuestionAnsweredCorrectly;
-  private static final int DELAY_MILLIS = 4000;
+  private static final int DELAY_MILLIS = 1000;
   private static final int GAME_OVER_CHECKER = 2;
   private Toast toast;
   private  Button btnAudiencePole;
@@ -139,6 +139,7 @@ public class QuizPlayScreen extends Activity {
 
   private void showToast(int color, String post) {
     toast = Toast.makeText(this, post, Toast.LENGTH_SHORT);
+    toast.setText(post);
     toast.getView().setBackgroundColor(color);
     toast.show();
   }
@@ -180,55 +181,56 @@ public class QuizPlayScreen extends Activity {
   }
 
   private void displayAmountWon() {
+    int greenColor = Color.rgb(51, 102, 0);
     switch(numQuestionAnsweredCorrectly) {
     case 0:
-      showToast(Color.GREEN, "WON Rs 0");
+      showToast(greenColor, "WON Rs 0");
       break;
     case 1:
-      showToast(Color.GREEN, "WON Rs 100");
+      showToast(greenColor, "WON Rs 100");
       break;
     case 2:
-      showToast(Color.GREEN, "WON Rs 200");
+      showToast(greenColor, "WON Rs 200");
       break;
     case 3:
-      showToast(Color.GREEN, "WON Rs 300");
+      showToast(greenColor, "WON Rs 300");
       break;
     case 4:
-      showToast(Color.GREEN, "WON Rs 500");
+      showToast(greenColor, "WON Rs 500");
       break;
     case 5:
-      showToast(Color.GREEN, "WON Rs 1,000");
+      showToast(greenColor, "WON Rs 1,000");
       break;
     case 6:
-      showToast(Color.GREEN, "WON Rs 2,000");
+      showToast(greenColor, "WON Rs 2,000");
       break;
     case 7:
-      showToast(Color.GREEN, "WON Rs 4,000");
+      showToast(greenColor, "WON Rs 4,000");
       break;
     case 8:
-      showToast(Color.GREEN, "WON Rs 8,000");
+      showToast(greenColor, "WON Rs 8,000");
       break;
     case 9:
-      showToast(Color.GREEN, "WON Rs 16,000");
+      showToast(greenColor, "WON Rs 16,000");
       break;
     case 10:
-      showToast(Color.GREEN, "WON Rs 32,000");
+      showToast(greenColor, "WON Rs 32,000");
       break;
     case 11:
-      showToast(Color.GREEN, "WON Rs 64,000");
+      showToast(greenColor, "WON Rs 64,000");
       break;
     case 12:
-      showToast(Color.GREEN, "WON Rs 1,25,000");
+      showToast(greenColor, "WON Rs 1,25,000");
       break;
     case 13:
-      showToast(Color.GREEN, "WON Rs 2,50,000");
+      showToast(greenColor, "WON Rs 2,50,000");
       break;
     case 14:
-      showToast(Color.GREEN, "WON Rs 5,00,000");
+      showToast(greenColor, "WON Rs 5,00,000");
       break;
     case 15:
       sound.stopMusic();
-      showToast(Color.GREEN, "WON Rs 1 Million");
+      showToast(greenColor, "WON Rs 1 Million");
       break;
     }
   }
@@ -238,7 +240,7 @@ public class QuizPlayScreen extends Activity {
       @Override public void run() {
         updateQuiz();
       }
-    }, 1000);
+    }, DELAY_MILLIS);
   }
 
   private void clickabilityOfOptions(boolean click) {
@@ -437,7 +439,7 @@ public class QuizPlayScreen extends Activity {
     if (checkGameOver == GAME_OVER_CHECKER) {
       new Handler().postDelayed(new Runnable() {
         @Override public void run() {
-          showToast(Color.RED, toastDisplayText);
+          showToast(Color.rgb(153, 0, 0), toastDisplayText);
           new Handler().postDelayed(new Runnable() {
             @Override public void run() {
               displayAmountWon();
@@ -456,5 +458,17 @@ public class QuizPlayScreen extends Activity {
   public void disableLifeLine() {
     btnAudiencePole.setClickable(false);
     btnFiftyfifty.setClickable(false);
+  }
+
+  @Override
+  protected void onDestroy() {
+    if(!sound.isSoundMuted()) {
+      sound.stopMusic();
+    }
+    if (timer != null) {
+      timer.cancel();
+      timer = null;
+    }
+    super.onDestroy();
   }
 }
