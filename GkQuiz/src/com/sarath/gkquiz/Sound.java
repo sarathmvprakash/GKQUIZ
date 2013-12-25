@@ -79,7 +79,7 @@ public class Sound {
     }
   }
 
-  private boolean isSoundMuted() {
+  public boolean isSoundMuted() {
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
     return sp.getBoolean("CHECKBOX", false);
   }
