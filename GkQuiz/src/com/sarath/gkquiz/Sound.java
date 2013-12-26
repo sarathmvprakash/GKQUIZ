@@ -20,6 +20,7 @@ public class Sound {
   private int rightAnswerBackgoundSound;
   private int wrongAnswerBackgoundSound;
   private int currentBackgroundSoundPaying;
+  private int secondCurrentBackgroundSoundPaying;
   private static final int START_BACKGROUND_SOUND = 1;
   private static final int NORMAL_BACKGROUND_SOUND = 2;
 
@@ -34,7 +35,7 @@ public class Sound {
   public void checkSoundFinishedPlaying() {
     firstMediaPlayer.setOnCompletionListener(new OnCompletionListener() {
       public void onCompletion(MediaPlayer mp) {
-        currentBackgroundSoundPaying = NORMAL_BACKGROUND_SOUND;
+        currentBackgroundSoundPaying = START_BACKGROUND_SOUND;
         firstMediaPlayer.stop();
         normalBackgroundSound();
       }
@@ -51,30 +52,34 @@ public class Sound {
   }
 
   public void normalBackgroundSound() {
-    secondMediaPlayer = MediaPlayer.create(context, normalBackgoundSound);
-    secondMediaPlayer.setLooping(true);
-    secondMediaPlayer.start();
+    firstMediaPlayer = MediaPlayer.create(context, normalBackgoundSound);
+    firstMediaPlayer.setLooping(true);
+    firstMediaPlayer.start();
   }
 
   public void rightAnswerBackgroundSound() {
     if (!isSoundMuted()) {
-      firstMediaPlayer = MediaPlayer.create(context, rightAnswerBackgoundSound);
-      firstMediaPlayer.start();
+      secondMediaPlayer = MediaPlayer.create(context, rightAnswerBackgoundSound);
+      secondCurrentBackgroundSoundPaying = NORMAL_BACKGROUND_SOUND;
+      secondMediaPlayer.start();
     }
   }
 
   public void wrongAnswerBackgroundSound() {
     if (!isSoundMuted()) {
-      stopMusic();
-      firstMediaPlayer = MediaPlayer.create(context, wrongAnswerBackgoundSound);
-      firstMediaPlayer.start();
+      secondMediaPlayer = MediaPlayer.create(context, wrongAnswerBackgoundSound);
+      secondCurrentBackgroundSoundPaying = NORMAL_BACKGROUND_SOUND;
+      secondMediaPlayer.start();
     }
   }
 
   public void stopMusic() {
-    if (currentBackgroundSoundPaying == 1) {
+    if (currentBackgroundSoundPaying == START_BACKGROUND_SOUND) {
       firstMediaPlayer.stop();
-    } else {
+    } else if (secondCurrentBackgroundSoundPaying == NORMAL_BACKGROUND_SOUND) {
+      secondMediaPlayer.stop();
+    } else if (currentBackgroundSoundPaying == START_BACKGROUND_SOUND && secondCurrentBackgroundSoundPaying == NORMAL_BACKGROUND_SOUND) {
+      firstMediaPlayer.stop();
       secondMediaPlayer.stop();
     }
   }
