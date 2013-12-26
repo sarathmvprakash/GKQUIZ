@@ -46,6 +46,7 @@ public class QuizPlayScreen extends Activity {
   private boolean currentClickabilityOfFiftyFiftyOption;
   private boolean currentClickabilityOfAudiencePoleOption;
   private Sound sound;
+  private boolean isFinalQuestion;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -93,6 +94,7 @@ public class QuizPlayScreen extends Activity {
     updatePrizeIndicator();
     fiftyCurrectoption = 0;
     fiftyWrongoption = 0;
+    isFinalQuestion = false;
   }
 
   private void setOnClickListener(final TextView selectedOption) {
@@ -117,6 +119,7 @@ public class QuizPlayScreen extends Activity {
           btnFiftyfifty.setClickable(currentClickabilityOfFiftyFiftyOption);
         } else {
           sound.wrongAnswerBackgroundSound();
+          sound.stopMusic();
           timer.cancel();
           selectedOption.setBackgroundColor(Color.RED);
           if (option1.getText().equals("A: "+quizEntries.get(quizId).answer)) {
@@ -145,7 +148,7 @@ public class QuizPlayScreen extends Activity {
   }
 
   private void updateQuiz() {
-    if (quizId < quizLimit) {
+    if (quizId < quizLimit && isFinalQuestion == false) {
       fiftyIsClicked = false;
       countdownTimer();
       int blueColor = getResources().getColor(R.color.blue);
@@ -230,7 +233,9 @@ public class QuizPlayScreen extends Activity {
       break;
     case 15:
       sound.stopMusic();
+      isFinalQuestion = true;
       showToast(greenColor, "WON Rs 1 Million");
+      finish();
       break;
     }
   }
