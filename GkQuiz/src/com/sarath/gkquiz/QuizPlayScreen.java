@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 /**
@@ -23,10 +24,10 @@ import android.widget.Toast;
 public class QuizPlayScreen extends Activity {
   private TextView[] textIndicator;
   private TextView question;
-  private TextView option1;
-  private TextView option2;
-  private TextView option3;
-  private TextView option4;
+  private RadioButton option1;
+  private RadioButton option2;
+  private RadioButton option3;
+  private RadioButton option4;
   private TextView countDown;
   private int quizLimit;
   static int quizId;
@@ -39,7 +40,7 @@ public class QuizPlayScreen extends Activity {
   private  Button btnAudiencePole;
   private  Button btnFiftyfifty;
   private int checkGameOver;
-  private  List<TextView> quizOPtions;
+  private  List<RadioButton> quizOPtions;
   private int fiftyCurrectoption;
   private int fiftyWrongoption;
   private boolean fiftyIsClicked;
@@ -62,10 +63,10 @@ public class QuizPlayScreen extends Activity {
     numQuestionAnsweredCorrectly = 0;
     textIndicator = new TextView[15];
     question = (TextView)findViewById(R.id.tv_question);
-    option1 = (TextView)findViewById(R.id.tv_choice_1);
-    option2 = (TextView)findViewById(R.id.tv_choice_2);
-    option3 = (TextView)findViewById(R.id.tv_choice_3);
-    option4 = (TextView)findViewById(R.id.tv_choice_4);
+    option1 = (RadioButton)findViewById(R.id.tv_choice_1);
+    option2 = (RadioButton)findViewById(R.id.tv_choice_2);
+    option3 = (RadioButton)findViewById(R.id.tv_choice_3);
+    option4 = (RadioButton)findViewById(R.id.tv_choice_4);
     textIndicator[0] = (TextView)findViewById(R.id.tv_rs100);
     textIndicator[1] = (TextView)findViewById(R.id.tv_rs200);
     textIndicator[2] = (TextView)findViewById(R.id.tv_rs300);
@@ -102,7 +103,7 @@ public class QuizPlayScreen extends Activity {
       @Override public void onClick(View v) {
         clickabilityOfOptions(false);
         disableLifeLine();
-        if (selectedOption.getText().toString().substring(3).equals(quizEntries.get(quizId).answer)) {
+        if (selectedOption.getText().toString().equals(quizEntries.get(quizId).answer)) {
           sound.rightAnswerBackgroundSound();
           timer.cancel();
           numQuestionAnsweredCorrectly++;
@@ -122,13 +123,13 @@ public class QuizPlayScreen extends Activity {
           sound.stopMusic();
           timer.cancel();
           selectedOption.setBackgroundColor(Color.RED);
-          if (option1.getText().equals("A: "+quizEntries.get(quizId).answer)) {
+          if (option1.getText().equals(quizEntries.get(quizId).answer)) {
             option1.setBackgroundColor(Color.GREEN);
-          } else if(option2.getText().equals("B: "+quizEntries.get(quizId).answer)) {
+          } else if(option2.getText().equals(quizEntries.get(quizId).answer)) {
             option2.setBackgroundColor(Color.GREEN);
-          } else if(option3.getText().equals("C: "+quizEntries.get(quizId).answer)) {
+          } else if(option3.getText().equals(quizEntries.get(quizId).answer)) {
             option3.setBackgroundColor(Color.GREEN);
-          } else if(option4.getText().equals("D: "+quizEntries.get(quizId).answer)) {
+          } else if(option4.getText().equals(quizEntries.get(quizId).answer)) {
             option4.setBackgroundColor(Color.GREEN);
           }
           if (checkGameOver == 1) {
@@ -158,10 +159,10 @@ public class QuizPlayScreen extends Activity {
       option4.setBackgroundColor(blueColor);
       QuizEntry entry = quizEntries.get(quizId);
       question.setText(entry.question);
-      option1.setText("A: "+entry.options.get(0));
-      option2.setText("B: "+entry.options.get(1));
-      option3.setText("C: "+entry.options.get(2));
-      option4.setText("D: "+entry.options.get(3));
+      option1.setText(entry.options.get(0));
+      option2.setText(entry.options.get(1));
+      option3.setText(entry.options.get(2));
+      option4.setText(entry.options.get(3));
     }
     clickabilityOfOptions(true);
   }
@@ -243,6 +244,7 @@ public class QuizPlayScreen extends Activity {
   public void delay() {
     new Handler().postDelayed(new Runnable() {
       @Override public void run() {
+        clearSelection();
         updateQuiz();
       }
     }, DELAY_MILLIS);
@@ -253,6 +255,13 @@ public class QuizPlayScreen extends Activity {
     option2.setClickable(click);
     option3.setClickable(click);
     option4.setClickable(click);
+  }
+
+  private void clearSelection() {
+    option1.setChecked(false);
+    option2.setChecked(false);
+    option3.setChecked(false);
+    option4.setChecked(false);
   }
 
   public void audiencePole() {
@@ -278,8 +287,8 @@ public class QuizPlayScreen extends Activity {
     btnFiftyfifty.setOnClickListener(new OnClickListener() {
       @Override public void onClick(View v) {
         fiftyIsClicked = true;
-        quizOPtions = new ArrayList<TextView>();
-        if (option1.getText().equals("A: "+quizEntries.get(quizId).answer)) {
+        quizOPtions = new ArrayList<RadioButton>();
+        if (option1.getText().equals(quizEntries.get(quizId).answer)) {
           quizOPtions.add(option2);
           quizOPtions.add(option3);
           quizOPtions.add(option4);
@@ -300,7 +309,7 @@ public class QuizPlayScreen extends Activity {
             option3.setClickable(false);
             option2.setClickable(false);
           }
-        } else if (option2.getText().equals("B: "+quizEntries.get(quizId).answer)) {
+        } else if (option2.getText().equals(quizEntries.get(quizId).answer)) {
           quizOPtions.add(option1);
           quizOPtions.add(option3);
           quizOPtions.add(option4);
@@ -321,7 +330,7 @@ public class QuizPlayScreen extends Activity {
             option3.setClickable(false);
             option1.setClickable(false);
           }
-        } else if (option3.getText().equals("C: "+quizEntries.get(quizId).answer)) {
+        } else if (option3.getText().equals(quizEntries.get(quizId).answer)) {
           quizOPtions.add(option1);
           quizOPtions.add(option2);
           quizOPtions.add(option4);
@@ -342,7 +351,7 @@ public class QuizPlayScreen extends Activity {
             option1.setClickable(false);
             option2.setClickable(false);
           }
-        } else if (option4.getText().equals("D: "+quizEntries.get(quizId).answer)) {
+        } else if (option4.getText().equals(quizEntries.get(quizId).answer)) {
           quizOPtions.add(option1);
           quizOPtions.add(option2);
           quizOPtions.add(option3);
