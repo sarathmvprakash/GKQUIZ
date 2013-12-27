@@ -20,10 +20,10 @@ import android.graphics.Paint.Align;
 public class BarGraph {
   private final Context context;
   private final QuizEntry quizEntry;
-  private int fiftyGraphCurrectoption;
-  private int fiftyGraphWrongoption;
-  private Random randomObject;
-  private int[] optionPercentage;
+  private final int fiftyGraphCurrectoption;
+  private final int fiftyGraphWrongoption;
+  private static final Random randomObject = new Random();
+  private final int[] optionPercentage;
   private int balance0;
   private int balance1;
   private int balance2;
@@ -36,7 +36,6 @@ public class BarGraph {
     this.fiftyGraphCurrectoption = fiftyGraphCurrectoption;
     this.fiftyGraphWrongoption = fiftyGraphWrongoption;
     optionPercentage = new int[4];
-    randomObject = new Random();
   }
 
   public Intent getIntent() {
@@ -82,7 +81,7 @@ public class BarGraph {
       dataset.addSeries(optionC);
       dataset.addSeries(optionD);
       XYMultipleSeriesRenderer mRenderer = new XYMultipleSeriesRenderer();
-      mRenderer.setChartTitle("Audiance Poll");
+      mRenderer.setChartTitle("Audience Poll");
       mRenderer.setAxesColor(Color.BLACK);
       mRenderer.setApplyBackgroundColor(true);
       mRenderer.setBackgroundColor(Color.WHITE);
@@ -177,7 +176,7 @@ public class BarGraph {
     dataset.addSeries(optionA);
     dataset.addSeries(optionB);
     XYMultipleSeriesRenderer mRenderer = new XYMultipleSeriesRenderer();
-    mRenderer.setChartTitle("Audiance Poll");
+    mRenderer.setChartTitle("Audience Poll");
     mRenderer.setAxesColor(Color.BLACK);
     mRenderer.setApplyBackgroundColor(true);
     mRenderer.setBackgroundColor(Color.WHITE);
